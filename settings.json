@@ -1,0 +1,25 @@
+{
+  "Channels": [
+	{
+      "Name": "ShrineFox",
+      "ID": "UCrB3t1zAQPwAeWtI8RZIOvQ"
+    },
+    {
+      "Name": "vinesauce",
+      "ID": "UCzORJV8l3FWY4cFO8ot-F2w"
+    },
+	{
+      "Name": "ExtraSauce",
+      "ID": "UCHEVjnU0KXhr-HDrlwoBm2g"
+    },
+	{
+      "Name": "FullSauce",
+      "ID": "UC2_IYqb1Tc_8Azh7rByedPA"
+    },
+	{
+      "Name": "TwitchClipSauce",
+      "ID": "UCo03CCLE1x34004iBmjcHnA"
+    }
+  ],
+  "YTDlpExePath": "C:\\Users\\ShrineFox\\.stacher\\yt-dlp.exe"
+}
