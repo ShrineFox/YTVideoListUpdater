@@ -1,23 +1,39 @@
 using Newtonsoft.Json;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using YoutubeDLSharp;
 using YoutubeDLSharp.Options;
+using static YTVideoListUpdater.YTVidListUpdater;
 
 namespace YTVideoListUpdater
 {
     public partial class YTVidListUpdater : Form
     {
+        public static string jsonPath;
         public static Settings settings;
+        public static List<YTVideo> videos;
         BindingSource bs = new BindingSource();
+        BindingSource bs2 = new BindingSource();
+        BindingSource bs_videos = new BindingSource();
 
         public YTVidListUpdater()
         {
-            string jsonPath = "./settings.json";
+            jsonPath = "./settings.json";
             InitializeComponent();
             LoadJson(jsonPath);
             bs.DataSource = settings.Channels;
+            bs2.DataSource = settings.Channels;
+            bs_videos.DataSource = videos;
+
             comboBox_Channel.DataSource = bs;
-            comboBox_Channel.ValueMember = "Name";
+            comboBox_ChannelDownload.DataSource = bs2;
+            comboBox_Video.DataSource = bs_videos;
+            comboBox_Channel.DisplayMember = "Name";
+            comboBox_ChannelDownload.DisplayMember = "Name";
+            comboBox_Video.DisplayMember = "Title";
+
+            txt_CmdArgs.Text = settings.CmdLineArgs;
         }
 
 
@@ -64,11 +80,13 @@ namespace YTVideoListUpdater
 
         private void ProcessOutputText(string txtPath, string outPath)
         {
-            using (WaitForFile(txtPath)) { };
+            using (WaitForFile(txtPath)) { }
+            ;
             if (!File.Exists(txtPath))
                 txtPath = "./--";
 
-            using (WaitForFile(txtPath)) { };
+            using (WaitForFile(txtPath)) { }
+            ;
             if (!File.Exists(txtPath))
             {
                 txt_Log.Text = "Could not find temp output file.";
@@ -85,6 +103,8 @@ namespace YTVideoListUpdater
             public List<YTChannel> Channels { get; set; } = new List<YTChannel>();
 
             public string YTDlpExePath { get; set; } = "./yt-dlp.exe";
+            [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+            public string CmdLineArgs { get; set; } = "";
 
         }
 
@@ -92,6 +112,12 @@ namespace YTVideoListUpdater
         {
             public string Name { get; set; } = "";
             public string ID { get; set; } = "";
+        }
+
+        public class YTVideo
+        {
+            public string URL { get; set; } = "";
+            public string Title { get; set; } = "";
         }
 
         public void SaveJson(string jsonPath)
@@ -139,6 +165,71 @@ namespace YTVideoListUpdater
                 }
             }
             return null;
+        }
+
+        private void Download_Click(object sender, EventArgs e)
+        {
+            DownloadSelectedVideo();
+        }
+
+        private async void DownloadSelectedVideo()
+        {
+            var video = (YTVideo)comboBox_Video.SelectedItem;
+
+            if (video == null) return;
+
+            btn_Download.Enabled = false;
+            txt_DownloadLog.Clear();
+
+            var ytdl = new YoutubeDL
+            {
+                YoutubeDLPath = settings.YTDlpExePath
+            };
+
+            OptionSet options = OptionSet.FromString(txt_CmdArgs.Text.Split('\n'));
+
+            var runResult = await ytdl.RunWithOptions(video.URL, options);
+
+            if (runResult.ErrorOutput != null)
+                foreach (string str in runResult.ErrorOutput)
+                    txt_DownloadLog.Text += "\r\n" + str;
+
+            btn_Download.Enabled = true;
+        }
+
+        private void ChannelDownload_Changed(object sender, EventArgs e)
+        {
+            var channel = (YTChannel)comboBox_ChannelDownload.SelectedItem;
+
+            UpdateVideoDownloadList(channel);
+        }
+
+        private void UpdateVideoDownloadList(YTChannel? channel)
+        {
+            if (!File.Exists(channel.Name + ".tsv"))
+            {
+                txt_DownloadLog.Text = $"Could not find \"{Path.GetFullPath(channel.Name + ".tsv")}\", " +
+                    $"try downloading a video list for the channel first.";
+                return;
+            }
+
+            if (videos != null)
+                videos.Clear();
+            else
+                videos = new List<YTVideo>();
+
+            foreach (var line in File.ReadAllLines(channel.Name + ".tsv"))
+                videos.Add(new YTVideo() { URL = line.Split('\t')[0], Title = line.Split('\t')[1] });
+            bs_videos.DataSource = null;
+            bs_videos.DataSource = videos;
+
+        }
+
+        private void Cmd_Changed(object sender, EventArgs e)
+        {
+            settings.CmdLineArgs = txt_CmdArgs.Text;
+
+            SaveJson(jsonPath);
         }
     }
 }
