@@ -1,26 +1,22 @@
 {
   "Channels": [
     {
-      "Name": "ShrineFox",
-      "ID": "UCrB3t1zAQPwAeWtI8RZIOvQ"
-    },
-    {
-      "Name": "vinesauce",
-      "ID": "UCzORJV8l3FWY4cFO8ot-F2w"
-    },
-    {
-      "Name": "ExtraSauce",
-      "ID": "UCHEVjnU0KXhr-HDrlwoBm2g"
-    },
-    {
       "Name": "FullSauce",
       "ID": "UC2_IYqb1Tc_8Azh7rByedPA"
     },
     {
       "Name": "TwitchClipSauce",
       "ID": "UCo03CCLE1x34004iBmjcHnA"
+    },
+    {
+      "Name": "ExtraSauce",
+      "ID": "UCHEVjnU0KXhr-HDrlwoBm2g"
+    },
+    {
+      "Name": "vinesauce",
+      "ID": "UCzORJV8l3FWY4cFO8ot-F2w"
     }
   ],
-  "YTDlpExePath": "C:\\Users\\ShrineFox\\.stacher\\yt-dlp.exe",
-  "CmdLineArgs": "-vU\r\n--cookies-from-browser firefox\r\n--limit-rate 400000\r\n--output \"D:\\Videos\\_DATAMINE\\full sauce\\%(title)s.%(ext)s\"\r\n--write-info-json\r\n--write-comments\r\n--write-thumbnail\r\n--add-metadata\r\n--write-description\r\n--write-sub\r\n--embed-subs\r\n--write-auto-subs"
+  "YTDlpExePath": ".\\yt-dlp.exe",
+  "CmdLineArgs": "-vU\r\n--cookies-from-browser firefox\r\n--limit-rate 400000\r\n--output \".\\%(title)s.%(ext)s\""
 }

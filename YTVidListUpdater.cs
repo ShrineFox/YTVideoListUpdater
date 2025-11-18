@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Media;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -74,6 +75,9 @@ namespace YTVideoListUpdater
                     txt_Log.Text += "\r\n" + str;
 
             ProcessOutputText(tempPath, "./" + channel.Name + ".tsv");
+
+            txt_Log.Text += $"\r\n\r\nDone updating \"{Path.GetFullPath(channel.Name + ".tsv")}\".";
+            SystemSounds.Exclamation.Play();
 
             btn_UpdateVideoList.Enabled = true;
         }
@@ -186,13 +190,21 @@ namespace YTVideoListUpdater
                 YoutubeDLPath = settings.YTDlpExePath
             };
 
-            OptionSet options = OptionSet.FromString(txt_CmdArgs.Text.Split('\n'));
+            string optionsText = txt_CmdArgs.Text;
+            if (chk_UseTimeStampRange.Checked)
+                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+
+            OptionSet options = OptionSet.FromString(optionsText.Split('\n'));
 
             var runResult = await ytdl.RunWithOptions(video.URL, options);
 
             if (runResult.ErrorOutput != null)
                 foreach (string str in runResult.ErrorOutput)
                     txt_DownloadLog.Text += "\r\n" + str;
+
+            txt_DownloadLog.Text += $"\r\n\r\nDone downloading \"{video.Title}\".";
+
+            SystemSounds.Exclamation.Play();
 
             btn_Download.Enabled = true;
         }
@@ -213,6 +225,14 @@ namespace YTVideoListUpdater
                 return;
             }
 
+            UpdateVideoListDataSource(channel);
+
+            comboBox_ChannelDownload.SelectedIndex = 0;
+            comboBox_ChannelDownload.SelectedIndex = comboBox_ChannelDownload.Items.IndexOf(channel);
+        }
+
+        private void UpdateVideoListDataSource(YTChannel channel)
+        {
             if (videos != null)
                 videos.Clear();
             else
@@ -222,7 +242,6 @@ namespace YTVideoListUpdater
                 videos.Add(new YTVideo() { URL = line.Split('\t')[0], Title = line.Split('\t')[1] });
             bs_videos.DataSource = null;
             bs_videos.DataSource = videos;
-
         }
 
         private void Cmd_Changed(object sender, EventArgs e)
@@ -230,6 +249,49 @@ namespace YTVideoListUpdater
             settings.CmdLineArgs = txt_CmdArgs.Text;
 
             SaveJson(jsonPath);
+        }
+
+        private void Search_KeyDown(object sender, KeyEventArgs e)
+        {
+            string searchTxt = txt_VideoSearch.Text.ToLower();
+            if (string.IsNullOrEmpty(searchTxt))
+                return;
+            if (e.KeyData == Keys.Enter)
+            {
+                // stop windows ding noise
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+
+                int i = comboBox_Video.SelectedIndex + 1;
+                while (i < comboBox_Video.Items.Count)
+                {
+                    if (i == comboBox_Video.SelectedIndex)
+                        return;
+
+                    var vid = (YTVideo)comboBox_Video.Items[i];
+
+                    if (vid.Title.ToLower().Contains(searchTxt.ToLower()) ||
+                        vid.URL.ToLower().Contains(searchTxt.ToLower())
+                        )
+                    {
+                        comboBox_Video.SelectedIndex = i;
+                        return;
+                    }
+
+                    if (i == comboBox_Video.Items.Count - 1)
+                        i = 0;
+                    else
+                        i++;
+                }
+            }
+        }
+
+        private void UseRange_CheckChanged(object sender, EventArgs e)
+        {
+            if (chk_UseTimeStampRange.Checked)
+                groupBox_Range.Enabled = true;
+            else
+                groupBox_Range.Enabled = false;
         }
     }
 }
