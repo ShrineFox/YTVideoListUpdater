@@ -54,6 +54,7 @@
             lbl_from = new Label();
             lbl_to = new Label();
             chk_UseTimeStampRange = new CheckBox();
+            chk_LaunchCmd = new CheckBox();
             tabPage2 = new TabPage();
             tlp_ListUpdater.SuspendLayout();
             groupBox_Channel.SuspendLayout();
@@ -166,6 +167,7 @@
             tableLayoutPanel_Downloader.Controls.Add(groupBox_VideoSearch, 0, 2);
             tableLayoutPanel_Downloader.Controls.Add(groupBox_Range, 0, 3);
             tableLayoutPanel_Downloader.Controls.Add(chk_UseTimeStampRange, 1, 3);
+            tableLayoutPanel_Downloader.Controls.Add(chk_LaunchCmd, 1, 2);
             tableLayoutPanel_Downloader.Dock = DockStyle.Fill;
             tableLayoutPanel_Downloader.Location = new Point(3, 3);
             tableLayoutPanel_Downloader.Name = "tableLayoutPanel_Downloader";
@@ -365,15 +367,27 @@
             // 
             // chk_UseTimeStampRange
             // 
-            chk_UseTimeStampRange.Anchor = AnchorStyles.Left;
             chk_UseTimeStampRange.AutoSize = true;
-            chk_UseTimeStampRange.Location = new Point(432, 222);
+            chk_UseTimeStampRange.Dock = DockStyle.Fill;
+            chk_UseTimeStampRange.Location = new Point(432, 204);
             chk_UseTimeStampRange.Name = "chk_UseTimeStampRange";
-            chk_UseTimeStampRange.Size = new Size(101, 24);
+            chk_UseTimeStampRange.Size = new Size(102, 61);
             chk_UseTimeStampRange.TabIndex = 8;
             chk_UseTimeStampRange.Text = "Use Range";
             chk_UseTimeStampRange.UseVisualStyleBackColor = true;
             chk_UseTimeStampRange.CheckedChanged += UseRange_CheckChanged;
+            // 
+            // chk_LaunchCmd
+            // 
+            chk_LaunchCmd.AutoSize = true;
+            chk_LaunchCmd.Dock = DockStyle.Fill;
+            chk_LaunchCmd.Font = new Font("Segoe UI", 8F);
+            chk_LaunchCmd.Location = new Point(432, 137);
+            chk_LaunchCmd.Name = "chk_LaunchCmd";
+            chk_LaunchCmd.Size = new Size(102, 61);
+            chk_LaunchCmd.TabIndex = 9;
+            chk_LaunchCmd.Text = "Launch Cmd";
+            chk_LaunchCmd.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -395,7 +409,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.2";
+            Text = "YTVideoListUpdater v1.2.1";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_Channel.ResumeLayout(false);
@@ -444,5 +458,6 @@
         private TextBox txt_to;
         private TextBox txt_from;
         private CheckBox chk_UseTimeStampRange;
+        private CheckBox chk_LaunchCmd;
     }
 }

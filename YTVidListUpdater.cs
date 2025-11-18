@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Media;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -182,6 +183,27 @@ namespace YTVideoListUpdater
 
             if (video == null) return;
 
+            string optionsText = txt_CmdArgs.Text;
+            if (chk_UseTimeStampRange.Checked)
+                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+
+            if (chk_LaunchCmd.Checked)
+            {
+                using (Process p = new Process())
+                {
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                    p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                    p.StartInfo.Arguments = optionsText.Replace("\r","").Replace("\n"," ") + $" {video.URL}";
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    p.StartInfo.CreateNoWindow = false;
+                    p.Start();
+                    txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
+                    p.WaitForExit();
+                }
+                return;
+            }
+
             btn_Download.Enabled = false;
             txt_DownloadLog.Clear();
 
@@ -189,10 +211,6 @@ namespace YTVideoListUpdater
             {
                 YoutubeDLPath = settings.YTDlpExePath
             };
-
-            string optionsText = txt_CmdArgs.Text;
-            if (chk_UseTimeStampRange.Checked)
-                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
 
             OptionSet options = OptionSet.FromString(optionsText.Split('\n'));
 
@@ -226,9 +244,6 @@ namespace YTVideoListUpdater
             }
 
             UpdateVideoListDataSource(channel);
-
-            comboBox_ChannelDownload.SelectedIndex = 0;
-            comboBox_ChannelDownload.SelectedIndex = comboBox_ChannelDownload.Items.IndexOf(channel);
         }
 
         private void UpdateVideoListDataSource(YTChannel channel)
