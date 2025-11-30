@@ -193,7 +193,6 @@
             button1.TabIndex = 10;
             button1.Text = "Download All Videos";
             button1.UseVisualStyleBackColor = true;
-            button1.Visible = false;
             button1.Click += DownloadAllVideos_Click;
             // 
             // txt_DownloadLog

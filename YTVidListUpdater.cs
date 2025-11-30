@@ -318,7 +318,9 @@ namespace YTVideoListUpdater
 
         private void DownloadAllVideos_Click(object sender, EventArgs e)
         {
-            foreach(var vid in videos.Where(x => x.Title.Contains("Vinny")))
+            YTVideo selectedVideo = (YTVideo)comboBox_Video.SelectedItem;
+
+            foreach(var vid in videos.SkipWhile(x => x != selectedVideo).Skip(1).Where(x => x.Title.Contains("Vinny")))
             {
                 string optionsText = txt_CmdArgs.Text;
                 if (chk_UseTimeStampRange.Checked)
