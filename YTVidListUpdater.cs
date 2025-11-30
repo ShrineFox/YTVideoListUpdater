@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO;
 using System.Media;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -189,18 +190,8 @@ namespace YTVideoListUpdater
 
             if (chk_LaunchCmd.Checked)
             {
-                using (Process p = new Process())
-                {
-                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
-
-                    p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
-                    p.StartInfo.Arguments = optionsText.Replace("\r","").Replace("\n"," ") + $" {video.URL}";
-                    p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                    p.StartInfo.CreateNoWindow = false;
-                    p.Start();
-                    txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
-                    p.WaitForExit();
-                }
+                Thread thred = new Thread(() => DownloadViaCmd(video, settings, optionsText));
+                thred.Start();
                 return;
             }
 
@@ -225,6 +216,22 @@ namespace YTVideoListUpdater
             SystemSounds.Exclamation.Play();
 
             btn_Download.Enabled = true;
+        }
+
+        private void DownloadViaCmd(YTVideo video, Settings settings, string optionsText)
+        {
+            using (Process p = new Process())
+            {
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                p.StartInfo.Arguments = optionsText.Replace("\r", "").Replace("\n", " ") + $" {video.URL}";
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                p.StartInfo.CreateNoWindow = false;
+                p.Start();
+                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
+                p.WaitForExit();
+            }
         }
 
         private void ChannelDownload_Changed(object sender, EventArgs e)
@@ -307,6 +314,29 @@ namespace YTVideoListUpdater
                 groupBox_Range.Enabled = true;
             else
                 groupBox_Range.Enabled = false;
+        }
+
+        private void DownloadAllVideos_Click(object sender, EventArgs e)
+        {
+            foreach(var vid in videos.Where(x => x.Title.Contains("Vinny")))
+            {
+                string optionsText = txt_CmdArgs.Text;
+                if (chk_UseTimeStampRange.Checked)
+                    optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+
+                using (Process p = new Process())
+                {
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                    p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                    p.StartInfo.Arguments = optionsText.Replace("\r", "").Replace("\n", " ") + $" {vid.URL}";
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    p.StartInfo.CreateNoWindow = false;
+                    p.Start();
+                    txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
+                    p.WaitForExit();
+                }
+            }    
         }
     }
 }

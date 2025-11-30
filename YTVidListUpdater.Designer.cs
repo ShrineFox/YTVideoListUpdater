@@ -37,6 +37,7 @@
             tabControl = new TabControl();
             tabPage1 = new TabPage();
             tableLayoutPanel_Downloader = new TableLayoutPanel();
+            button1 = new Button();
             txt_DownloadLog = new TextBox();
             groupBox_DownloadChannel = new GroupBox();
             comboBox_ChannelDownload = new ComboBox();
@@ -159,6 +160,7 @@
             tableLayoutPanel_Downloader.ColumnCount = 2;
             tableLayoutPanel_Downloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
             tableLayoutPanel_Downloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel_Downloader.Controls.Add(button1, 1, 0);
             tableLayoutPanel_Downloader.Controls.Add(txt_DownloadLog, 0, 5);
             tableLayoutPanel_Downloader.Controls.Add(groupBox_DownloadChannel, 0, 0);
             tableLayoutPanel_Downloader.Controls.Add(btn_Download, 1, 1);
@@ -180,6 +182,19 @@
             tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_Downloader.Size = new Size(537, 452);
             tableLayoutPanel_Downloader.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.Dock = DockStyle.Fill;
+            button1.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            button1.Location = new Point(432, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(102, 61);
+            button1.TabIndex = 10;
+            button1.Text = "Download All Videos";
+            button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
+            button1.Click += DownloadAllVideos_Click;
             // 
             // txt_DownloadLog
             // 
@@ -409,7 +424,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.2.1";
+            Text = "YTVideoListUpdater v1.2.2";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_Channel.ResumeLayout(false);
@@ -459,5 +474,6 @@
         private TextBox txt_from;
         private CheckBox chk_UseTimeStampRange;
         private CheckBox chk_LaunchCmd;
+        private Button button1;
     }
 }
