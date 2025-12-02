@@ -36,36 +36,50 @@
             txt_Log = new TextBox();
             tabControl = new TabControl();
             tabPage1 = new TabPage();
-            tableLayoutPanel_Downloader = new TableLayoutPanel();
-            button1 = new Button();
-            txt_DownloadLog = new TextBox();
-            groupBox_DownloadChannel = new GroupBox();
-            comboBox_ChannelDownload = new ComboBox();
-            btn_Download = new Button();
-            groupBox_Cmd = new GroupBox();
-            txt_CmdArgs = new TextBox();
-            groupBox_Video = new GroupBox();
-            comboBox_Video = new ComboBox();
+            tableLayoutPanel_ChannelDownloader = new TableLayoutPanel();
+            chk_LaunchCmd = new CheckBox();
+            tabControl_DlType = new TabControl();
+            tabPage4 = new TabPage();
+            tableLayoutPanel_VideoDownloader = new TableLayoutPanel();
+            btn_DownloadURL = new Button();
+            groupBox_DownloadURL = new GroupBox();
+            txt_VideoURL = new TextBox();
+            tabPage5 = new TabPage();
+            tlp_ChannelDl = new TableLayoutPanel();
             groupBox_VideoSearch = new GroupBox();
             txt_VideoSearch = new TextBox();
+            btn_DownloadSelectedVideo = new Button();
+            groupBox_Video = new GroupBox();
+            comboBox_Video = new ComboBox();
+            btn_DownloadAllVideos = new Button();
+            groupBox_DownloadChannel = new GroupBox();
+            comboBox_ChannelDownload = new ComboBox();
+            txt_DownloadLog = new TextBox();
+            groupBox_Cmd = new GroupBox();
+            txt_CmdArgs = new TextBox();
             groupBox_Range = new GroupBox();
             tlp_TimeRange = new TableLayoutPanel();
+            chk_UseTimeStampRange = new CheckBox();
             txt_to = new TextBox();
             txt_from = new TextBox();
             lbl_from = new Label();
             lbl_to = new Label();
-            chk_UseTimeStampRange = new CheckBox();
-            chk_LaunchCmd = new CheckBox();
             tabPage2 = new TabPage();
             tlp_ListUpdater.SuspendLayout();
             groupBox_Channel.SuspendLayout();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
-            tableLayoutPanel_Downloader.SuspendLayout();
+            tableLayoutPanel_ChannelDownloader.SuspendLayout();
+            tabControl_DlType.SuspendLayout();
+            tabPage4.SuspendLayout();
+            tableLayoutPanel_VideoDownloader.SuspendLayout();
+            groupBox_DownloadURL.SuspendLayout();
+            tabPage5.SuspendLayout();
+            tlp_ChannelDl.SuspendLayout();
+            groupBox_VideoSearch.SuspendLayout();
+            groupBox_Video.SuspendLayout();
             groupBox_DownloadChannel.SuspendLayout();
             groupBox_Cmd.SuspendLayout();
-            groupBox_Video.SuspendLayout();
-            groupBox_VideoSearch.SuspendLayout();
             groupBox_Range.SuspendLayout();
             tlp_TimeRange.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -146,66 +160,222 @@
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(tableLayoutPanel_Downloader);
+            tabPage1.Controls.Add(tableLayoutPanel_ChannelDownloader);
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(543, 458);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "Video Downloader";
+            tabPage1.Text = "Downloader";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel_Downloader
+            // tableLayoutPanel_ChannelDownloader
             // 
-            tableLayoutPanel_Downloader.ColumnCount = 2;
-            tableLayoutPanel_Downloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel_Downloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel_Downloader.Controls.Add(button1, 1, 0);
-            tableLayoutPanel_Downloader.Controls.Add(txt_DownloadLog, 0, 5);
-            tableLayoutPanel_Downloader.Controls.Add(groupBox_DownloadChannel, 0, 0);
-            tableLayoutPanel_Downloader.Controls.Add(btn_Download, 1, 1);
-            tableLayoutPanel_Downloader.Controls.Add(groupBox_Cmd, 0, 4);
-            tableLayoutPanel_Downloader.Controls.Add(groupBox_Video, 0, 1);
-            tableLayoutPanel_Downloader.Controls.Add(groupBox_VideoSearch, 0, 2);
-            tableLayoutPanel_Downloader.Controls.Add(groupBox_Range, 0, 3);
-            tableLayoutPanel_Downloader.Controls.Add(chk_UseTimeStampRange, 1, 3);
-            tableLayoutPanel_Downloader.Controls.Add(chk_LaunchCmd, 1, 2);
-            tableLayoutPanel_Downloader.Dock = DockStyle.Fill;
-            tableLayoutPanel_Downloader.Location = new Point(3, 3);
-            tableLayoutPanel_Downloader.Name = "tableLayoutPanel_Downloader";
-            tableLayoutPanel_Downloader.RowCount = 6;
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel_Downloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel_Downloader.Size = new Size(537, 452);
-            tableLayoutPanel_Downloader.TabIndex = 1;
+            tableLayoutPanel_ChannelDownloader.ColumnCount = 2;
+            tableLayoutPanel_ChannelDownloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 79.70205F));
+            tableLayoutPanel_ChannelDownloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20.29795F));
+            tableLayoutPanel_ChannelDownloader.Controls.Add(chk_LaunchCmd, 1, 2);
+            tableLayoutPanel_ChannelDownloader.Controls.Add(tabControl_DlType, 0, 0);
+            tableLayoutPanel_ChannelDownloader.Controls.Add(txt_DownloadLog, 0, 4);
+            tableLayoutPanel_ChannelDownloader.Controls.Add(groupBox_Cmd, 0, 3);
+            tableLayoutPanel_ChannelDownloader.Controls.Add(groupBox_Range, 0, 2);
+            tableLayoutPanel_ChannelDownloader.Dock = DockStyle.Fill;
+            tableLayoutPanel_ChannelDownloader.Location = new Point(3, 3);
+            tableLayoutPanel_ChannelDownloader.Name = "tableLayoutPanel_ChannelDownloader";
+            tableLayoutPanel_ChannelDownloader.RowCount = 5;
+            tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 35F));
+            tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel_ChannelDownloader.Size = new Size(537, 452);
+            tableLayoutPanel_ChannelDownloader.TabIndex = 1;
             // 
-            // button1
+            // chk_LaunchCmd
             // 
-            button1.Dock = DockStyle.Fill;
-            button1.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
-            button1.Location = new Point(432, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(102, 61);
-            button1.TabIndex = 10;
-            button1.Text = "Download All Videos";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += DownloadAllVideos_Click;
+            chk_LaunchCmd.AutoSize = true;
+            chk_LaunchCmd.Checked = true;
+            chk_LaunchCmd.CheckState = CheckState.Checked;
+            chk_LaunchCmd.Dock = DockStyle.Fill;
+            chk_LaunchCmd.Font = new Font("Segoe UI", 8F);
+            chk_LaunchCmd.Location = new Point(431, 228);
+            chk_LaunchCmd.Name = "chk_LaunchCmd";
+            chk_LaunchCmd.Size = new Size(103, 61);
+            chk_LaunchCmd.TabIndex = 16;
+            chk_LaunchCmd.Text = "Launch Cmd";
+            chk_LaunchCmd.UseVisualStyleBackColor = true;
             // 
-            // txt_DownloadLog
+            // tabControl_DlType
             // 
-            tableLayoutPanel_Downloader.SetColumnSpan(txt_DownloadLog, 2);
-            txt_DownloadLog.Dock = DockStyle.Fill;
-            txt_DownloadLog.Location = new Point(3, 361);
-            txt_DownloadLog.Multiline = true;
-            txt_DownloadLog.Name = "txt_DownloadLog";
-            txt_DownloadLog.ReadOnly = true;
-            txt_DownloadLog.ScrollBars = ScrollBars.Vertical;
-            txt_DownloadLog.Size = new Size(531, 88);
-            txt_DownloadLog.TabIndex = 3;
+            tableLayoutPanel_ChannelDownloader.SetColumnSpan(tabControl_DlType, 2);
+            tabControl_DlType.Controls.Add(tabPage4);
+            tabControl_DlType.Controls.Add(tabPage5);
+            tabControl_DlType.Dock = DockStyle.Fill;
+            tabControl_DlType.Location = new Point(3, 3);
+            tabControl_DlType.Name = "tabControl_DlType";
+            tableLayoutPanel_ChannelDownloader.SetRowSpan(tabControl_DlType, 2);
+            tabControl_DlType.SelectedIndex = 0;
+            tabControl_DlType.Size = new Size(531, 219);
+            tabControl_DlType.TabIndex = 12;
+            // 
+            // tabPage4
+            // 
+            tabPage4.Controls.Add(tableLayoutPanel_VideoDownloader);
+            tabPage4.Location = new Point(4, 29);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(523, 186);
+            tabPage4.TabIndex = 0;
+            tabPage4.Text = "Video";
+            tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel_VideoDownloader
+            // 
+            tableLayoutPanel_VideoDownloader.ColumnCount = 2;
+            tableLayoutPanel_VideoDownloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel_VideoDownloader.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel_VideoDownloader.Controls.Add(btn_DownloadURL, 1, 0);
+            tableLayoutPanel_VideoDownloader.Controls.Add(groupBox_DownloadURL, 0, 0);
+            tableLayoutPanel_VideoDownloader.Dock = DockStyle.Fill;
+            tableLayoutPanel_VideoDownloader.Location = new Point(3, 3);
+            tableLayoutPanel_VideoDownloader.Name = "tableLayoutPanel_VideoDownloader";
+            tableLayoutPanel_VideoDownloader.RowCount = 1;
+            tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel_VideoDownloader.Size = new Size(517, 180);
+            tableLayoutPanel_VideoDownloader.TabIndex = 3;
+            // 
+            // btn_DownloadURL
+            // 
+            btn_DownloadURL.Dock = DockStyle.Fill;
+            btn_DownloadURL.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            btn_DownloadURL.Location = new Point(416, 3);
+            btn_DownloadURL.Name = "btn_DownloadURL";
+            btn_DownloadURL.Size = new Size(98, 174);
+            btn_DownloadURL.TabIndex = 1;
+            btn_DownloadURL.Text = "Download Video";
+            btn_DownloadURL.UseVisualStyleBackColor = true;
+            btn_DownloadURL.Click += DownloadVideoURL_Click;
+            // 
+            // groupBox_DownloadURL
+            // 
+            groupBox_DownloadURL.Controls.Add(txt_VideoURL);
+            groupBox_DownloadURL.Dock = DockStyle.Fill;
+            groupBox_DownloadURL.Location = new Point(3, 3);
+            groupBox_DownloadURL.Name = "groupBox_DownloadURL";
+            groupBox_DownloadURL.Size = new Size(407, 174);
+            groupBox_DownloadURL.TabIndex = 6;
+            groupBox_DownloadURL.TabStop = false;
+            groupBox_DownloadURL.Text = "Video URL";
+            // 
+            // txt_VideoURL
+            // 
+            txt_VideoURL.Dock = DockStyle.Fill;
+            txt_VideoURL.Location = new Point(3, 23);
+            txt_VideoURL.Name = "txt_VideoURL";
+            txt_VideoURL.ScrollBars = ScrollBars.Vertical;
+            txt_VideoURL.Size = new Size(401, 27);
+            txt_VideoURL.TabIndex = 1;
+            // 
+            // tabPage5
+            // 
+            tabPage5.Controls.Add(tlp_ChannelDl);
+            tabPage5.Location = new Point(4, 29);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Padding = new Padding(3);
+            tabPage5.Size = new Size(523, 186);
+            tabPage5.TabIndex = 1;
+            tabPage5.Text = "Channel";
+            tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tlp_ChannelDl
+            // 
+            tlp_ChannelDl.ColumnCount = 2;
+            tlp_ChannelDl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tlp_ChannelDl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tlp_ChannelDl.Controls.Add(groupBox_VideoSearch, 0, 2);
+            tlp_ChannelDl.Controls.Add(btn_DownloadSelectedVideo, 1, 1);
+            tlp_ChannelDl.Controls.Add(groupBox_Video, 0, 1);
+            tlp_ChannelDl.Controls.Add(btn_DownloadAllVideos, 1, 0);
+            tlp_ChannelDl.Controls.Add(groupBox_DownloadChannel, 0, 0);
+            tlp_ChannelDl.Dock = DockStyle.Fill;
+            tlp_ChannelDl.Location = new Point(3, 3);
+            tlp_ChannelDl.Name = "tlp_ChannelDl";
+            tlp_ChannelDl.RowCount = 3;
+            tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tlp_ChannelDl.Size = new Size(517, 180);
+            tlp_ChannelDl.TabIndex = 0;
+            // 
+            // groupBox_VideoSearch
+            // 
+            groupBox_VideoSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            groupBox_VideoSearch.Controls.Add(txt_VideoSearch);
+            groupBox_VideoSearch.Location = new Point(3, 125);
+            groupBox_VideoSearch.Name = "groupBox_VideoSearch";
+            groupBox_VideoSearch.Size = new Size(407, 50);
+            groupBox_VideoSearch.TabIndex = 14;
+            groupBox_VideoSearch.TabStop = false;
+            groupBox_VideoSearch.Text = "Video Search";
+            // 
+            // txt_VideoSearch
+            // 
+            txt_VideoSearch.Dock = DockStyle.Fill;
+            txt_VideoSearch.Location = new Point(3, 23);
+            txt_VideoSearch.Name = "txt_VideoSearch";
+            txt_VideoSearch.ScrollBars = ScrollBars.Vertical;
+            txt_VideoSearch.Size = new Size(401, 27);
+            txt_VideoSearch.TabIndex = 1;
+            txt_VideoSearch.KeyDown += Search_KeyDown;
+            // 
+            // btn_DownloadSelectedVideo
+            // 
+            btn_DownloadSelectedVideo.Dock = DockStyle.Fill;
+            btn_DownloadSelectedVideo.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            btn_DownloadSelectedVideo.Location = new Point(416, 63);
+            btn_DownloadSelectedVideo.Name = "btn_DownloadSelectedVideo";
+            btn_DownloadSelectedVideo.Size = new Size(98, 54);
+            btn_DownloadSelectedVideo.TabIndex = 13;
+            btn_DownloadSelectedVideo.Text = "Download Video";
+            btn_DownloadSelectedVideo.UseVisualStyleBackColor = true;
+            btn_DownloadSelectedVideo.Click += Download_Click;
+            // 
+            // groupBox_Video
+            // 
+            groupBox_Video.Controls.Add(comboBox_Video);
+            groupBox_Video.Dock = DockStyle.Fill;
+            groupBox_Video.Location = new Point(3, 63);
+            groupBox_Video.Name = "groupBox_Video";
+            groupBox_Video.Size = new Size(407, 54);
+            groupBox_Video.TabIndex = 12;
+            groupBox_Video.TabStop = false;
+            groupBox_Video.Text = "Selected Video";
+            // 
+            // comboBox_Video
+            // 
+            comboBox_Video.Dock = DockStyle.Fill;
+            comboBox_Video.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox_Video.FormattingEnabled = true;
+            comboBox_Video.Location = new Point(3, 23);
+            comboBox_Video.Name = "comboBox_Video";
+            comboBox_Video.Size = new Size(401, 28);
+            comboBox_Video.TabIndex = 0;
+            // 
+            // btn_DownloadAllVideos
+            // 
+            btn_DownloadAllVideos.Dock = DockStyle.Fill;
+            btn_DownloadAllVideos.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            btn_DownloadAllVideos.Location = new Point(416, 3);
+            btn_DownloadAllVideos.Name = "btn_DownloadAllVideos";
+            btn_DownloadAllVideos.Size = new Size(98, 54);
+            btn_DownloadAllVideos.TabIndex = 11;
+            btn_DownloadAllVideos.Text = "Download All Videos";
+            btn_DownloadAllVideos.UseVisualStyleBackColor = true;
+            btn_DownloadAllVideos.Click += DownloadAllVideos_Click;
             // 
             // groupBox_DownloadChannel
             // 
@@ -213,8 +383,8 @@
             groupBox_DownloadChannel.Dock = DockStyle.Fill;
             groupBox_DownloadChannel.Location = new Point(3, 3);
             groupBox_DownloadChannel.Name = "groupBox_DownloadChannel";
-            groupBox_DownloadChannel.Size = new Size(423, 61);
-            groupBox_DownloadChannel.TabIndex = 0;
+            groupBox_DownloadChannel.Size = new Size(407, 54);
+            groupBox_DownloadChannel.TabIndex = 1;
             groupBox_DownloadChannel.TabStop = false;
             groupBox_DownloadChannel.Text = "Channel";
             // 
@@ -225,28 +395,28 @@
             comboBox_ChannelDownload.FormattingEnabled = true;
             comboBox_ChannelDownload.Location = new Point(3, 23);
             comboBox_ChannelDownload.Name = "comboBox_ChannelDownload";
-            comboBox_ChannelDownload.Size = new Size(417, 28);
+            comboBox_ChannelDownload.Size = new Size(401, 28);
             comboBox_ChannelDownload.TabIndex = 0;
             comboBox_ChannelDownload.SelectedIndexChanged += ChannelDownload_Changed;
             // 
-            // btn_Download
+            // txt_DownloadLog
             // 
-            btn_Download.Dock = DockStyle.Fill;
-            btn_Download.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
-            btn_Download.Location = new Point(432, 70);
-            btn_Download.Name = "btn_Download";
-            btn_Download.Size = new Size(102, 61);
-            btn_Download.TabIndex = 1;
-            btn_Download.Text = "Download Video";
-            btn_Download.UseVisualStyleBackColor = true;
-            btn_Download.Click += Download_Click;
+            tableLayoutPanel_ChannelDownloader.SetColumnSpan(txt_DownloadLog, 2);
+            txt_DownloadLog.Dock = DockStyle.Fill;
+            txt_DownloadLog.Location = new Point(3, 385);
+            txt_DownloadLog.Multiline = true;
+            txt_DownloadLog.Name = "txt_DownloadLog";
+            txt_DownloadLog.ReadOnly = true;
+            txt_DownloadLog.ScrollBars = ScrollBars.Vertical;
+            txt_DownloadLog.Size = new Size(531, 64);
+            txt_DownloadLog.TabIndex = 3;
             // 
             // groupBox_Cmd
             // 
-            tableLayoutPanel_Downloader.SetColumnSpan(groupBox_Cmd, 2);
+            tableLayoutPanel_ChannelDownloader.SetColumnSpan(groupBox_Cmd, 2);
             groupBox_Cmd.Controls.Add(txt_CmdArgs);
             groupBox_Cmd.Dock = DockStyle.Fill;
-            groupBox_Cmd.Location = new Point(3, 271);
+            groupBox_Cmd.Location = new Point(3, 295);
             groupBox_Cmd.Name = "groupBox_Cmd";
             groupBox_Cmd.Size = new Size(531, 84);
             groupBox_Cmd.TabIndex = 5;
@@ -264,67 +434,27 @@
             txt_CmdArgs.TabIndex = 0;
             txt_CmdArgs.TextChanged += Cmd_Changed;
             // 
-            // groupBox_Video
-            // 
-            groupBox_Video.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            groupBox_Video.Controls.Add(comboBox_Video);
-            groupBox_Video.Location = new Point(3, 75);
-            groupBox_Video.Name = "groupBox_Video";
-            groupBox_Video.Size = new Size(423, 51);
-            groupBox_Video.TabIndex = 5;
-            groupBox_Video.TabStop = false;
-            groupBox_Video.Text = "Selected Video";
-            // 
-            // comboBox_Video
-            // 
-            comboBox_Video.Dock = DockStyle.Fill;
-            comboBox_Video.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox_Video.FormattingEnabled = true;
-            comboBox_Video.Location = new Point(3, 23);
-            comboBox_Video.Name = "comboBox_Video";
-            comboBox_Video.Size = new Size(417, 28);
-            comboBox_Video.TabIndex = 0;
-            // 
-            // groupBox_VideoSearch
-            // 
-            groupBox_VideoSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            groupBox_VideoSearch.Controls.Add(txt_VideoSearch);
-            groupBox_VideoSearch.Location = new Point(3, 141);
-            groupBox_VideoSearch.Name = "groupBox_VideoSearch";
-            groupBox_VideoSearch.Size = new Size(423, 52);
-            groupBox_VideoSearch.TabIndex = 6;
-            groupBox_VideoSearch.TabStop = false;
-            groupBox_VideoSearch.Text = "Video Search";
-            // 
-            // txt_VideoSearch
-            // 
-            txt_VideoSearch.Dock = DockStyle.Fill;
-            txt_VideoSearch.Location = new Point(3, 23);
-            txt_VideoSearch.Name = "txt_VideoSearch";
-            txt_VideoSearch.ScrollBars = ScrollBars.Vertical;
-            txt_VideoSearch.Size = new Size(417, 27);
-            txt_VideoSearch.TabIndex = 1;
-            txt_VideoSearch.KeyDown += Search_KeyDown;
-            // 
             // groupBox_Range
             // 
-            groupBox_Range.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             groupBox_Range.Controls.Add(tlp_TimeRange);
+            groupBox_Range.Dock = DockStyle.Fill;
             groupBox_Range.Enabled = false;
-            groupBox_Range.Location = new Point(3, 208);
+            groupBox_Range.Location = new Point(3, 228);
             groupBox_Range.Name = "groupBox_Range";
-            groupBox_Range.Size = new Size(423, 52);
+            groupBox_Range.Size = new Size(422, 61);
             groupBox_Range.TabIndex = 7;
             groupBox_Range.TabStop = false;
             groupBox_Range.Text = "Timestamp Range";
             // 
             // tlp_TimeRange
             // 
-            tlp_TimeRange.ColumnCount = 4;
-            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tlp_TimeRange.ColumnCount = 5;
+            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.2222214F));
+            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.2222214F));
+            tlp_TimeRange.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.2222214F));
+            tlp_TimeRange.Controls.Add(chk_UseTimeStampRange, 4, 0);
             tlp_TimeRange.Controls.Add(txt_to, 3, 0);
             tlp_TimeRange.Controls.Add(txt_from, 1, 0);
             tlp_TimeRange.Controls.Add(lbl_from, 0, 0);
@@ -334,26 +464,38 @@
             tlp_TimeRange.Name = "tlp_TimeRange";
             tlp_TimeRange.RowCount = 1;
             tlp_TimeRange.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_TimeRange.Size = new Size(417, 26);
+            tlp_TimeRange.Size = new Size(416, 35);
             tlp_TimeRange.TabIndex = 0;
+            // 
+            // chk_UseTimeStampRange
+            // 
+            chk_UseTimeStampRange.AutoSize = true;
+            chk_UseTimeStampRange.Dock = DockStyle.Fill;
+            chk_UseTimeStampRange.Font = new Font("Segoe UI", 7F);
+            chk_UseTimeStampRange.Location = new Point(325, 3);
+            chk_UseTimeStampRange.Name = "chk_UseTimeStampRange";
+            chk_UseTimeStampRange.Size = new Size(88, 29);
+            chk_UseTimeStampRange.TabIndex = 9;
+            chk_UseTimeStampRange.Text = "Use Range";
+            chk_UseTimeStampRange.UseVisualStyleBackColor = true;
             // 
             // txt_to
             // 
-            txt_to.Dock = DockStyle.Fill;
-            txt_to.Location = new Point(315, 3);
+            txt_to.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txt_to.Location = new Point(233, 4);
             txt_to.Name = "txt_to";
             txt_to.ScrollBars = ScrollBars.Vertical;
-            txt_to.Size = new Size(99, 27);
+            txt_to.Size = new Size(86, 27);
             txt_to.TabIndex = 3;
             txt_to.Text = "00:02:00";
             // 
             // txt_from
             // 
-            txt_from.Dock = DockStyle.Fill;
-            txt_from.Location = new Point(107, 3);
+            txt_from.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txt_from.Location = new Point(72, 4);
             txt_from.Name = "txt_from";
             txt_from.ScrollBars = ScrollBars.Vertical;
-            txt_from.Size = new Size(98, 27);
+            txt_from.Size = new Size(86, 27);
             txt_from.TabIndex = 2;
             txt_from.Text = "00:01:00";
             // 
@@ -361,7 +503,7 @@
             // 
             lbl_from.Anchor = AnchorStyles.Right;
             lbl_from.AutoSize = true;
-            lbl_from.Location = new Point(57, 3);
+            lbl_from.Location = new Point(22, 7);
             lbl_from.Name = "lbl_from";
             lbl_from.Size = new Size(44, 20);
             lbl_from.TabIndex = 0;
@@ -372,36 +514,12 @@
             // 
             lbl_to.Anchor = AnchorStyles.Right;
             lbl_to.AutoSize = true;
-            lbl_to.Location = new Point(283, 3);
+            lbl_to.Location = new Point(201, 7);
             lbl_to.Name = "lbl_to";
             lbl_to.Size = new Size(26, 20);
             lbl_to.TabIndex = 1;
             lbl_to.Text = "to:";
             lbl_to.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // chk_UseTimeStampRange
-            // 
-            chk_UseTimeStampRange.AutoSize = true;
-            chk_UseTimeStampRange.Dock = DockStyle.Fill;
-            chk_UseTimeStampRange.Location = new Point(432, 204);
-            chk_UseTimeStampRange.Name = "chk_UseTimeStampRange";
-            chk_UseTimeStampRange.Size = new Size(102, 61);
-            chk_UseTimeStampRange.TabIndex = 8;
-            chk_UseTimeStampRange.Text = "Use Range";
-            chk_UseTimeStampRange.UseVisualStyleBackColor = true;
-            chk_UseTimeStampRange.CheckedChanged += UseRange_CheckChanged;
-            // 
-            // chk_LaunchCmd
-            // 
-            chk_LaunchCmd.AutoSize = true;
-            chk_LaunchCmd.Dock = DockStyle.Fill;
-            chk_LaunchCmd.Font = new Font("Segoe UI", 8F);
-            chk_LaunchCmd.Location = new Point(432, 137);
-            chk_LaunchCmd.Name = "chk_LaunchCmd";
-            chk_LaunchCmd.Size = new Size(102, 61);
-            chk_LaunchCmd.TabIndex = 9;
-            chk_LaunchCmd.Text = "Launch Cmd";
-            chk_LaunchCmd.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -429,14 +547,21 @@
             groupBox_Channel.ResumeLayout(false);
             tabControl.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
-            tableLayoutPanel_Downloader.ResumeLayout(false);
-            tableLayoutPanel_Downloader.PerformLayout();
+            tableLayoutPanel_ChannelDownloader.ResumeLayout(false);
+            tableLayoutPanel_ChannelDownloader.PerformLayout();
+            tabControl_DlType.ResumeLayout(false);
+            tabPage4.ResumeLayout(false);
+            tableLayoutPanel_VideoDownloader.ResumeLayout(false);
+            groupBox_DownloadURL.ResumeLayout(false);
+            groupBox_DownloadURL.PerformLayout();
+            tabPage5.ResumeLayout(false);
+            tlp_ChannelDl.ResumeLayout(false);
+            groupBox_VideoSearch.ResumeLayout(false);
+            groupBox_VideoSearch.PerformLayout();
+            groupBox_Video.ResumeLayout(false);
             groupBox_DownloadChannel.ResumeLayout(false);
             groupBox_Cmd.ResumeLayout(false);
             groupBox_Cmd.PerformLayout();
-            groupBox_Video.ResumeLayout(false);
-            groupBox_VideoSearch.ResumeLayout(false);
-            groupBox_VideoSearch.PerformLayout();
             groupBox_Range.ResumeLayout(false);
             tlp_TimeRange.ResumeLayout(false);
             tlp_TimeRange.PerformLayout();
@@ -454,25 +579,33 @@
         private TabControl tabControl;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private TableLayoutPanel tableLayoutPanel_Downloader;
-        private GroupBox groupBox_DownloadChannel;
-        private ComboBox comboBox_ChannelDownload;
-        private Button btn_Download;
+        private TableLayoutPanel tableLayoutPanel_ChannelDownloader;
         private TextBox txt_DownloadLog;
         private GroupBox groupBox_Cmd;
         private TextBox txt_CmdArgs;
-        private GroupBox groupBox_VideoSearch;
-        private TextBox txt_VideoSearch;
-        private GroupBox groupBox_Video;
-        private ComboBox comboBox_Video;
         private GroupBox groupBox_Range;
         private TableLayoutPanel tlp_TimeRange;
         private Label lbl_from;
         private Label lbl_to;
         private TextBox txt_to;
         private TextBox txt_from;
+        private TabControl tabControl_DlType;
+        private TabPage tabPage4;
+        private TableLayoutPanel tableLayoutPanel_VideoDownloader;
+        private Button btn_DownloadURL;
+        private GroupBox groupBox_DownloadURL;
+        private TextBox txt_VideoURL;
+        private TabPage tabPage5;
+        private TableLayoutPanel tlp_ChannelDl;
+        private Button btn_DownloadSelectedVideo;
+        private GroupBox groupBox_Video;
+        private ComboBox comboBox_Video;
+        private Button btn_DownloadAllVideos;
+        private GroupBox groupBox_DownloadChannel;
+        private ComboBox comboBox_ChannelDownload;
+        private GroupBox groupBox_VideoSearch;
+        private TextBox txt_VideoSearch;
         private CheckBox chk_UseTimeStampRange;
         private CheckBox chk_LaunchCmd;
-        private Button button1;
     }
 }

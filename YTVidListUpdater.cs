@@ -39,9 +39,6 @@ namespace YTVideoListUpdater
 
             txt_CmdArgs.Text = settings.CmdLineArgs;
         }
-
-
-
         private async void ProcessChannel(YTChannel channel)
         {
             txt_Log.Text = $"Processing channel \"{channel.Name}\", please wait...";
@@ -185,54 +182,7 @@ namespace YTVideoListUpdater
 
             if (video == null) return;
 
-            string optionsText = txt_CmdArgs.Text;
-            if (chk_UseTimeStampRange.Checked)
-                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
-
-            if (chk_LaunchCmd.Checked)
-            {
-                Thread thred = new Thread(() => DownloadViaCmd(video, settings, optionsText));
-                thred.Start();
-                return;
-            }
-
-            btn_Download.Enabled = false;
-            txt_DownloadLog.Clear();
-
-            var ytdl = new YoutubeDL
-            {
-                YoutubeDLPath = settings.YTDlpExePath
-            };
-
-            OptionSet options = OptionSet.FromString(optionsText.Split('\n'));
-
-            var runResult = await ytdl.RunWithOptions(video.URL, options);
-
-            if (runResult.ErrorOutput != null)
-                foreach (string str in runResult.ErrorOutput)
-                    txt_DownloadLog.Text += "\r\n" + str;
-
-            txt_DownloadLog.Text += $"\r\n\r\nDone downloading \"{video.Title}\".";
-
-            SystemSounds.Exclamation.Play();
-
-            btn_Download.Enabled = true;
-        }
-
-        private void DownloadViaCmd(YTVideo video, Settings settings, string optionsText)
-        {
-            using (Process p = new Process())
-            {
-                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
-
-                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
-                p.StartInfo.Arguments = optionsText.Replace("\r", "").Replace("\n", " ") + $" {video.URL}";
-                p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                p.StartInfo.CreateNoWindow = false;
-                p.Start();
-                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
-                p.WaitForExit();
-            }
+            DownloadYTVideo(video.URL, video.Title);
         }
 
         private void ChannelDownload_Changed(object sender, EventArgs e)
@@ -321,16 +271,10 @@ namespace YTVideoListUpdater
         {
             YTVideo selectedVideo = (YTVideo)comboBox_Video.SelectedItem;
 
-            foreach(var vid in videos.SkipWhile(x => x != selectedVideo).Skip(1).Where(x => x.Title.Contains("Vinny")))
+            foreach (var vid in videos.SkipWhile(x => x != selectedVideo).Skip(1)) //.Where(x => x.Title.Contains("Vinny")))
             {
-                string optionsText = txt_CmdArgs.Text;
-                if (chk_UseTimeStampRange.Checked)
-                    optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
-
-                string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" {optionsText.Replace("\r", "").Replace("\n", " ")} {vid.URL}";
-                StartProcessNoActivate(args);
-                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n{args}";
-            }    
+                DownloadYTVideo(vid.URL, vid.Title);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -393,7 +337,7 @@ namespace YTVideoListUpdater
         const uint INFINITE = 0xFFFFFFFF;
 
 
-        public static void StartProcessNoActivate(string cmdLine)
+        public static void LaunchYTDLPCmdSilently(string cmdLine)
         {
             STARTUPINFO si = new STARTUPINFO();
             si.cb = Marshal.SizeOf(si);
@@ -409,6 +353,63 @@ namespace YTVideoListUpdater
 
             CloseHandle(pi.hProcess);
             CloseHandle(pi.hThread);
+        }
+
+        private void DownloadVideoURL_Click(object sender, EventArgs e)
+        {
+            DownloadYTVideo(txt_VideoURL.Text);
+        }
+
+        private async void DownloadYTVideo(string url, string title = "")
+        {
+            string optionsText = txt_CmdArgs.Text;
+
+            if (chk_UseTimeStampRange.Checked)
+                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+
+            string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" {optionsText.Replace("\r", "").Replace("\n", " ")} {url}";
+
+            if (chk_LaunchCmd.Checked)
+            {
+                LaunchYTDLPCmdSilently(args);
+                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n{args}";
+            }
+            else
+            {
+                var ytdl = new YoutubeDL
+                {
+                    YoutubeDLPath = settings.YTDlpExePath
+                };
+
+                OptionSet options = OptionSet.FromString(optionsText.Split('\n'));
+
+                var runResult = await ytdl.RunWithOptions(url, options);
+
+                if (runResult.ErrorOutput != null)
+                    foreach (string str in runResult.ErrorOutput)
+                        txt_DownloadLog.Text += "\r\n" + str;
+
+                if (string.IsNullOrEmpty(title))
+                    title = url;
+                txt_DownloadLog.Text += $"\r\n\r\nDone downloading \"{title}\".";
+                SystemSounds.Exclamation.Play();
+            }
+        }
+
+        private void DownloadViaCmd(YTVideo video, Settings settings, string optionsText)
+        {
+            using (Process p = new Process())
+            {
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                p.StartInfo.Arguments = optionsText.Replace("\r", "").Replace("\n", " ") + $" {video.URL}";
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                p.StartInfo.CreateNoWindow = false;
+                p.Start();
+                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
+                p.WaitForExit();
+            }
         }
     }
 }
