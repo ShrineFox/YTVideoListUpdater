@@ -262,9 +262,15 @@ namespace YTVideoListUpdater
         private void UseRange_CheckChanged(object sender, EventArgs e)
         {
             if (chk_UseTimeStampRange.Checked)
-                groupBox_Range.Enabled = true;
+            {
+                txt_to.Enabled = true;
+                txt_from.Enabled = true;
+            }
             else
-                groupBox_Range.Enabled = false;
+            {
+                txt_to.Enabled = false;
+                txt_from.Enabled = false;
+            }
         }
 
         private void DownloadAllVideos_Click(object sender, EventArgs e)

@@ -438,7 +438,6 @@
             // 
             groupBox_Range.Controls.Add(tlp_TimeRange);
             groupBox_Range.Dock = DockStyle.Fill;
-            groupBox_Range.Enabled = false;
             groupBox_Range.Location = new Point(3, 228);
             groupBox_Range.Name = "groupBox_Range";
             groupBox_Range.Size = new Size(422, 61);
@@ -478,10 +477,12 @@
             chk_UseTimeStampRange.TabIndex = 9;
             chk_UseTimeStampRange.Text = "Use Range";
             chk_UseTimeStampRange.UseVisualStyleBackColor = true;
+            chk_UseTimeStampRange.CheckedChanged += UseRange_CheckChanged;
             // 
             // txt_to
             // 
             txt_to.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txt_to.Enabled = false;
             txt_to.Location = new Point(233, 4);
             txt_to.Name = "txt_to";
             txt_to.ScrollBars = ScrollBars.Vertical;
@@ -492,6 +493,7 @@
             // txt_from
             // 
             txt_from.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txt_from.Enabled = false;
             txt_from.Location = new Point(72, 4);
             txt_from.Name = "txt_from";
             txt_from.ScrollBars = ScrollBars.Vertical;
