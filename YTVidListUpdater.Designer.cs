@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YTVidListUpdater));
             tlp_ListUpdater = new TableLayoutPanel();
+            btn_UpdateYTDLP = new Button();
             groupBox_Channel = new GroupBox();
             comboBox_Channel = new ComboBox();
             btn_UpdateVideoList = new Button();
@@ -65,6 +66,8 @@
             lbl_from = new Label();
             lbl_to = new Label();
             tabPage2 = new TabPage();
+            groupBox_ytdlpver = new GroupBox();
+            lbl_Version = new Label();
             tlp_ListUpdater.SuspendLayout();
             groupBox_Channel.SuspendLayout();
             tabControl.SuspendLayout();
@@ -83,24 +86,40 @@
             groupBox_Range.SuspendLayout();
             tlp_TimeRange.SuspendLayout();
             tabPage2.SuspendLayout();
+            groupBox_ytdlpver.SuspendLayout();
             SuspendLayout();
             // 
             // tlp_ListUpdater
             // 
             tlp_ListUpdater.ColumnCount = 2;
-            tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80.0744858F));
+            tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.9255123F));
+            tlp_ListUpdater.Controls.Add(groupBox_ytdlpver, 0, 1);
+            tlp_ListUpdater.Controls.Add(btn_UpdateYTDLP, 1, 1);
             tlp_ListUpdater.Controls.Add(groupBox_Channel, 0, 0);
             tlp_ListUpdater.Controls.Add(btn_UpdateVideoList, 1, 0);
-            tlp_ListUpdater.Controls.Add(txt_Log, 0, 1);
+            tlp_ListUpdater.Controls.Add(txt_Log, 0, 2);
             tlp_ListUpdater.Dock = DockStyle.Fill;
             tlp_ListUpdater.Location = new Point(3, 3);
             tlp_ListUpdater.Name = "tlp_ListUpdater";
-            tlp_ListUpdater.RowCount = 2;
+            tlp_ListUpdater.RowCount = 3;
             tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tlp_ListUpdater.Size = new Size(537, 452);
             tlp_ListUpdater.TabIndex = 0;
+            // 
+            // btn_UpdateYTDLP
+            // 
+            btn_UpdateYTDLP.Dock = DockStyle.Fill;
+            btn_UpdateYTDLP.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_UpdateYTDLP.Location = new Point(433, 93);
+            btn_UpdateYTDLP.Name = "btn_UpdateYTDLP";
+            btn_UpdateYTDLP.Size = new Size(101, 61);
+            btn_UpdateYTDLP.TabIndex = 3;
+            btn_UpdateYTDLP.Text = "Update YT-DLP";
+            btn_UpdateYTDLP.UseVisualStyleBackColor = true;
+            btn_UpdateYTDLP.Click += UpdateYTDLP_Click;
             // 
             // groupBox_Channel
             // 
@@ -108,7 +127,7 @@
             groupBox_Channel.Dock = DockStyle.Fill;
             groupBox_Channel.Location = new Point(3, 3);
             groupBox_Channel.Name = "groupBox_Channel";
-            groupBox_Channel.Size = new Size(423, 84);
+            groupBox_Channel.Size = new Size(424, 84);
             groupBox_Channel.TabIndex = 0;
             groupBox_Channel.TabStop = false;
             groupBox_Channel.Text = "Channel";
@@ -120,16 +139,16 @@
             comboBox_Channel.FormattingEnabled = true;
             comboBox_Channel.Location = new Point(3, 23);
             comboBox_Channel.Name = "comboBox_Channel";
-            comboBox_Channel.Size = new Size(417, 28);
+            comboBox_Channel.Size = new Size(418, 28);
             comboBox_Channel.TabIndex = 0;
             // 
             // btn_UpdateVideoList
             // 
             btn_UpdateVideoList.Dock = DockStyle.Fill;
             btn_UpdateVideoList.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
-            btn_UpdateVideoList.Location = new Point(432, 3);
+            btn_UpdateVideoList.Location = new Point(433, 3);
             btn_UpdateVideoList.Name = "btn_UpdateVideoList";
-            btn_UpdateVideoList.Size = new Size(102, 84);
+            btn_UpdateVideoList.Size = new Size(101, 84);
             btn_UpdateVideoList.TabIndex = 1;
             btn_UpdateVideoList.Text = "Update Video List";
             btn_UpdateVideoList.UseVisualStyleBackColor = true;
@@ -139,12 +158,12 @@
             // 
             tlp_ListUpdater.SetColumnSpan(txt_Log, 2);
             txt_Log.Dock = DockStyle.Fill;
-            txt_Log.Location = new Point(3, 93);
+            txt_Log.Location = new Point(3, 160);
             txt_Log.Multiline = true;
             txt_Log.Name = "txt_Log";
             txt_Log.ReadOnly = true;
             txt_Log.ScrollBars = ScrollBars.Vertical;
-            txt_Log.Size = new Size(531, 356);
+            txt_Log.Size = new Size(531, 289);
             txt_Log.TabIndex = 2;
             // 
             // tabControl
@@ -531,8 +550,29 @@
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(543, 458);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "List Updater";
+            tabPage2.Text = "Updater";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_ytdlpver
+            // 
+            groupBox_ytdlpver.Controls.Add(lbl_Version);
+            groupBox_ytdlpver.Dock = DockStyle.Fill;
+            groupBox_ytdlpver.Location = new Point(3, 93);
+            groupBox_ytdlpver.Name = "groupBox_ytdlpver";
+            groupBox_ytdlpver.Size = new Size(424, 61);
+            groupBox_ytdlpver.TabIndex = 4;
+            groupBox_ytdlpver.TabStop = false;
+            groupBox_ytdlpver.Text = "YT-DLP Version";
+            // 
+            // lbl_Version
+            // 
+            lbl_Version.AutoSize = true;
+            lbl_Version.Dock = DockStyle.Right;
+            lbl_Version.Location = new Point(421, 23);
+            lbl_Version.Name = "lbl_Version";
+            lbl_Version.Size = new Size(0, 20);
+            lbl_Version.TabIndex = 1;
+            lbl_Version.TextAlign = ContentAlignment.MiddleRight;
             // 
             // YTVidListUpdater
             // 
@@ -543,7 +583,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.2.2";
+            Text = "YTVideoListUpdater v1.2.3";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_Channel.ResumeLayout(false);
@@ -568,6 +608,8 @@
             tlp_TimeRange.ResumeLayout(false);
             tlp_TimeRange.PerformLayout();
             tabPage2.ResumeLayout(false);
+            groupBox_ytdlpver.ResumeLayout(false);
+            groupBox_ytdlpver.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -609,5 +651,8 @@
         private TextBox txt_VideoSearch;
         private CheckBox chk_UseTimeStampRange;
         private CheckBox chk_LaunchCmd;
+        private Button btn_UpdateYTDLP;
+        private GroupBox groupBox_ytdlpver;
+        private Label lbl_Version;
     }
 }

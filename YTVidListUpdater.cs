@@ -38,6 +38,7 @@ namespace YTVideoListUpdater
             comboBox_Video.DisplayMember = "Title";
 
             txt_CmdArgs.Text = settings.CmdLineArgs;
+            GetYTDLPVersion();
         }
         private async void ProcessChannel(YTChannel channel)
         {
@@ -277,7 +278,7 @@ namespace YTVideoListUpdater
         {
             YTVideo selectedVideo = (YTVideo)comboBox_Video.SelectedItem;
 
-            foreach (var vid in videos.SkipWhile(x => x != selectedVideo).Skip(1)) //.Where(x => x.Title.Contains("Vinny")))
+            foreach (var vid in videos.SkipWhile(x => x != selectedVideo).Skip(1))
             {
                 DownloadYTVideo(vid.URL, vid.Title);
             }
@@ -416,6 +417,43 @@ namespace YTVideoListUpdater
                 txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
                 p.WaitForExit();
             }
+        }
+
+        private string GetYTDLPVersion()
+        {
+            string output = "";
+            using (Process p = new Process())
+            {
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                p.StartInfo.Arguments = "--version";
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+            }
+            lbl_Version.Text = output;
+            return output;
+        }
+
+        private void UpdateYTDLP_Click(object sender, EventArgs e)
+        {
+            using (Process p = new Process())
+            {
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                p.StartInfo.Arguments = "-U";
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                p.WaitForExit();
+            }
+            txt_Log.Text += $"\r\nYT-DLP is now up to date: {GetYTDLPVersion()}";
+
         }
     }
 }
