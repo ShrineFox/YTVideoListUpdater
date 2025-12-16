@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
@@ -20,6 +20,7 @@ namespace YTVideoListUpdater
         BindingSource bs = new BindingSource();
         BindingSource bs2 = new BindingSource();
         BindingSource bs_videos = new BindingSource();
+        public static bool stopDownloads;
 
         public YTVidListUpdater()
         {
@@ -184,6 +185,7 @@ namespace YTVideoListUpdater
             if (video == null) return;
 
             DownloadYTVideo(video.URL, video.Title);
+            stopDownloads = false;
         }
 
         private void ChannelDownload_Changed(object sender, EventArgs e)
@@ -282,6 +284,8 @@ namespace YTVideoListUpdater
             {
                 DownloadYTVideo(vid.URL, vid.Title);
             }
+
+            stopDownloads = false;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -343,32 +347,61 @@ namespace YTVideoListUpdater
 
         const uint INFINITE = 0xFFFFFFFF;
 
+        private static readonly System.Threading.SemaphoreSlim s_launchSemaphore = new System.Threading.SemaphoreSlim(1, 1);
 
         public static void LaunchYTDLPCmdSilently(string cmdLine)
         {
-            STARTUPINFO si = new STARTUPINFO();
-            si.cb = Marshal.SizeOf(si);
-            si.dwFlags = STARTF_USESHOWWINDOW;
-            si.wShowWindow = SW_SHOWMINNOACTIVE;
+            // Fire-and-forget task that serializes process launches.
+            // Each call will queue; only one process runs at a time.
+            _ = Task.Run(() =>
+            {
+                // wait until previous process finished (or the slot is available)
+                s_launchSemaphore.Wait();
+                try
+                {
+                    STARTUPINFO si = new STARTUPINFO();
+                    si.cb = Marshal.SizeOf(si);
+                    si.dwFlags = STARTF_USESHOWWINDOW;
+                    si.wShowWindow = SW_SHOWMINNOACTIVE;
 
-            PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
+                    PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
 
-            CreateProcess(null, cmdLine, IntPtr.Zero, IntPtr.Zero, true,
-                0, IntPtr.Zero, null, ref si, out pi);
+                    bool started = CreateProcess(null, cmdLine, IntPtr.Zero, IntPtr.Zero, true,
+                        0, IntPtr.Zero, null, ref si, out pi);
 
-            WaitForSingleObject(pi.hProcess, INFINITE);
+                    if (!started)
+                        return;
 
-            CloseHandle(pi.hProcess);
-            CloseHandle(pi.hThread);
+                    WaitForSingleObject(pi.hProcess, INFINITE);
+
+                    if (pi.hProcess != IntPtr.Zero)
+                        CloseHandle(pi.hProcess);
+                    if (pi.hThread != IntPtr.Zero)
+                        CloseHandle(pi.hThread);
+                }
+                catch
+                {
+                    // intentionally swallow exceptions to keep the queue alive;
+                    // consider logging if you want visibility into failures.
+                }
+                finally
+                {
+                    s_launchSemaphore.Release();
+                }
+            });
         }
 
         private void DownloadVideoURL_Click(object sender, EventArgs e)
         {
             DownloadYTVideo(txt_VideoURL.Text);
+            stopDownloads = false;
         }
 
         private async void DownloadYTVideo(string url, string title = "")
         {
+            if (stopDownloads)
+                return;
+
             string optionsText = txt_CmdArgs.Text;
 
             if (chk_UseTimeStampRange.Checked)
@@ -403,29 +436,12 @@ namespace YTVideoListUpdater
             }
         }
 
-        private void DownloadViaCmd(YTVideo video, Settings settings, string optionsText)
-        {
-            using (Process p = new Process())
-            {
-                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
-
-                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
-                p.StartInfo.Arguments = optionsText.Replace("\r", "").Replace("\n", " ") + $" {video.URL}";
-                p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                p.StartInfo.CreateNoWindow = false;
-                p.Start();
-                txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n\"{p.StartInfo.FileName}\" {p.StartInfo.Arguments}";
-                p.WaitForExit();
-            }
-        }
-
         private string GetYTDLPVersion()
         {
             string output = "";
             using (Process p = new Process())
             {
                 p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
-
                 p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
                 p.StartInfo.Arguments = "--version";
                 p.StartInfo.UseShellExecute = false;
@@ -441,19 +457,56 @@ namespace YTVideoListUpdater
 
         private void UpdateYTDLP_Click(object sender, EventArgs e)
         {
-            using (Process p = new Process())
-            {
-                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+            txt_Log.Text += $"\r\nUpdating YT-DLP...";
 
-                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
-                p.StartInfo.Arguments = "-U";
-                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                p.StartInfo.CreateNoWindow = true;
-                p.Start();
-                p.WaitForExit();
-            }
+            new Thread(() =>
+            {
+                using (Process p = new Process())
+                {
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+
+                    p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                    p.StartInfo.Arguments = "-U";
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    p.WaitForExit();
+                }
+            }).Start();
+
             txt_Log.Text += $"\r\nYT-DLP is now up to date: {GetYTDLPVersion()}";
 
+        }
+
+        private void StopDownload_Click(object sender, EventArgs e)
+        {
+            stopDownloads = true;
+        }
+
+        private void CheckMissingVideos_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            folderBrowser.Description = "Select folder containing downloaded videos";
+            folderBrowser.UseDescriptionForTitle = true;
+
+            var result = folderBrowser.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
+            {
+                string[] files = Directory.GetFiles(folderBrowser.SelectedPath);
+
+                foreach (var video in videos)
+                {
+                    if (!files.Any(x => 
+                    x.Contains(video.Title.Replace("\"", "＂").Replace("?", "？").Replace(":", "：").Replace("/", "⧸"))
+                    && (x.EndsWith(".mp4") || x.EndsWith(".mkv") || x.EndsWith(".webm"))
+                    ))
+                    {
+                        txt_DownloadLog.Text += $"\r\nMissing video: {video.URL} | {video.Title}";
+                    }
+                }
+
+                System.Windows.Forms.MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
+            }
         }
     }
 }

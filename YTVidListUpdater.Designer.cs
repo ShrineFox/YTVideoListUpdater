@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YTVidListUpdater));
             tlp_ListUpdater = new TableLayoutPanel();
+            groupBox_ytdlpver = new GroupBox();
+            lbl_Version = new Label();
             btn_UpdateYTDLP = new Button();
             groupBox_Channel = new GroupBox();
             comboBox_Channel = new ComboBox();
@@ -47,6 +49,7 @@
             txt_VideoURL = new TextBox();
             tabPage5 = new TabPage();
             tlp_ChannelDl = new TableLayoutPanel();
+            btn_StopDownloads = new Button();
             groupBox_VideoSearch = new GroupBox();
             txt_VideoSearch = new TextBox();
             btn_DownloadSelectedVideo = new Button();
@@ -66,9 +69,11 @@
             lbl_from = new Label();
             lbl_to = new Label();
             tabPage2 = new TabPage();
-            groupBox_ytdlpver = new GroupBox();
-            lbl_Version = new Label();
+            menuStrip1 = new MenuStrip();
+            toolsToolStripMenuItem = new ToolStripMenuItem();
+            checkMissingVideosToolStripMenuItem = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
+            groupBox_ytdlpver.SuspendLayout();
             groupBox_Channel.SuspendLayout();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -86,7 +91,7 @@
             groupBox_Range.SuspendLayout();
             tlp_TimeRange.SuspendLayout();
             tabPage2.SuspendLayout();
-            groupBox_ytdlpver.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // tlp_ListUpdater
@@ -106,16 +111,37 @@
             tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
-            tlp_ListUpdater.Size = new Size(537, 452);
+            tlp_ListUpdater.Size = new Size(537, 424);
             tlp_ListUpdater.TabIndex = 0;
+            // 
+            // groupBox_ytdlpver
+            // 
+            groupBox_ytdlpver.Controls.Add(lbl_Version);
+            groupBox_ytdlpver.Dock = DockStyle.Fill;
+            groupBox_ytdlpver.Location = new Point(3, 87);
+            groupBox_ytdlpver.Name = "groupBox_ytdlpver";
+            groupBox_ytdlpver.Size = new Size(424, 57);
+            groupBox_ytdlpver.TabIndex = 4;
+            groupBox_ytdlpver.TabStop = false;
+            groupBox_ytdlpver.Text = "YT-DLP Version";
+            // 
+            // lbl_Version
+            // 
+            lbl_Version.AutoSize = true;
+            lbl_Version.Dock = DockStyle.Right;
+            lbl_Version.Location = new Point(421, 23);
+            lbl_Version.Name = "lbl_Version";
+            lbl_Version.Size = new Size(0, 20);
+            lbl_Version.TabIndex = 1;
+            lbl_Version.TextAlign = ContentAlignment.MiddleRight;
             // 
             // btn_UpdateYTDLP
             // 
             btn_UpdateYTDLP.Dock = DockStyle.Fill;
             btn_UpdateYTDLP.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_UpdateYTDLP.Location = new Point(433, 93);
+            btn_UpdateYTDLP.Location = new Point(433, 87);
             btn_UpdateYTDLP.Name = "btn_UpdateYTDLP";
-            btn_UpdateYTDLP.Size = new Size(101, 61);
+            btn_UpdateYTDLP.Size = new Size(101, 57);
             btn_UpdateYTDLP.TabIndex = 3;
             btn_UpdateYTDLP.Text = "Update YT-DLP";
             btn_UpdateYTDLP.UseVisualStyleBackColor = true;
@@ -127,7 +153,7 @@
             groupBox_Channel.Dock = DockStyle.Fill;
             groupBox_Channel.Location = new Point(3, 3);
             groupBox_Channel.Name = "groupBox_Channel";
-            groupBox_Channel.Size = new Size(424, 84);
+            groupBox_Channel.Size = new Size(424, 78);
             groupBox_Channel.TabIndex = 0;
             groupBox_Channel.TabStop = false;
             groupBox_Channel.Text = "Channel";
@@ -148,7 +174,7 @@
             btn_UpdateVideoList.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
             btn_UpdateVideoList.Location = new Point(433, 3);
             btn_UpdateVideoList.Name = "btn_UpdateVideoList";
-            btn_UpdateVideoList.Size = new Size(101, 84);
+            btn_UpdateVideoList.Size = new Size(101, 78);
             btn_UpdateVideoList.TabIndex = 1;
             btn_UpdateVideoList.Text = "Update Video List";
             btn_UpdateVideoList.UseVisualStyleBackColor = true;
@@ -158,12 +184,12 @@
             // 
             tlp_ListUpdater.SetColumnSpan(txt_Log, 2);
             txt_Log.Dock = DockStyle.Fill;
-            txt_Log.Location = new Point(3, 160);
+            txt_Log.Location = new Point(3, 150);
             txt_Log.Multiline = true;
             txt_Log.Name = "txt_Log";
             txt_Log.ReadOnly = true;
             txt_Log.ScrollBars = ScrollBars.Vertical;
-            txt_Log.Size = new Size(531, 289);
+            txt_Log.Size = new Size(531, 271);
             txt_Log.TabIndex = 2;
             // 
             // tabControl
@@ -171,10 +197,10 @@
             tabControl.Controls.Add(tabPage1);
             tabControl.Controls.Add(tabPage2);
             tabControl.Dock = DockStyle.Fill;
-            tabControl.Location = new Point(0, 0);
+            tabControl.Location = new Point(0, 28);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(551, 491);
+            tabControl.Size = new Size(551, 463);
             tabControl.TabIndex = 1;
             // 
             // tabPage1
@@ -183,7 +209,7 @@
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(543, 458);
+            tabPage1.Size = new Size(543, 430);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Downloader";
             tabPage1.UseVisualStyleBackColor = true;
@@ -207,7 +233,7 @@
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel_ChannelDownloader.Size = new Size(537, 452);
+            tableLayoutPanel_ChannelDownloader.Size = new Size(537, 424);
             tableLayoutPanel_ChannelDownloader.TabIndex = 1;
             // 
             // chk_LaunchCmd
@@ -217,9 +243,9 @@
             chk_LaunchCmd.CheckState = CheckState.Checked;
             chk_LaunchCmd.Dock = DockStyle.Fill;
             chk_LaunchCmd.Font = new Font("Segoe UI", 8F);
-            chk_LaunchCmd.Location = new Point(431, 228);
+            chk_LaunchCmd.Location = new Point(431, 214);
             chk_LaunchCmd.Name = "chk_LaunchCmd";
-            chk_LaunchCmd.Size = new Size(103, 61);
+            chk_LaunchCmd.Size = new Size(103, 57);
             chk_LaunchCmd.TabIndex = 16;
             chk_LaunchCmd.Text = "Launch Cmd";
             chk_LaunchCmd.UseVisualStyleBackColor = true;
@@ -234,7 +260,7 @@
             tabControl_DlType.Name = "tabControl_DlType";
             tableLayoutPanel_ChannelDownloader.SetRowSpan(tabControl_DlType, 2);
             tabControl_DlType.SelectedIndex = 0;
-            tabControl_DlType.Size = new Size(531, 219);
+            tabControl_DlType.Size = new Size(531, 205);
             tabControl_DlType.TabIndex = 12;
             // 
             // tabPage4
@@ -243,7 +269,7 @@
             tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(523, 186);
+            tabPage4.Size = new Size(523, 172);
             tabPage4.TabIndex = 0;
             tabPage4.Text = "Video";
             tabPage4.UseVisualStyleBackColor = true;
@@ -264,7 +290,7 @@
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel_VideoDownloader.Size = new Size(517, 180);
+            tableLayoutPanel_VideoDownloader.Size = new Size(517, 166);
             tableLayoutPanel_VideoDownloader.TabIndex = 3;
             // 
             // btn_DownloadURL
@@ -273,7 +299,7 @@
             btn_DownloadURL.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
             btn_DownloadURL.Location = new Point(416, 3);
             btn_DownloadURL.Name = "btn_DownloadURL";
-            btn_DownloadURL.Size = new Size(98, 174);
+            btn_DownloadURL.Size = new Size(98, 160);
             btn_DownloadURL.TabIndex = 1;
             btn_DownloadURL.Text = "Download Video";
             btn_DownloadURL.UseVisualStyleBackColor = true;
@@ -285,7 +311,7 @@
             groupBox_DownloadURL.Dock = DockStyle.Fill;
             groupBox_DownloadURL.Location = new Point(3, 3);
             groupBox_DownloadURL.Name = "groupBox_DownloadURL";
-            groupBox_DownloadURL.Size = new Size(407, 174);
+            groupBox_DownloadURL.Size = new Size(407, 160);
             groupBox_DownloadURL.TabIndex = 6;
             groupBox_DownloadURL.TabStop = false;
             groupBox_DownloadURL.Text = "Video URL";
@@ -305,7 +331,7 @@
             tabPage5.Location = new Point(4, 29);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(523, 186);
+            tabPage5.Size = new Size(523, 172);
             tabPage5.TabIndex = 1;
             tabPage5.Text = "Channel";
             tabPage5.UseVisualStyleBackColor = true;
@@ -315,6 +341,7 @@
             tlp_ChannelDl.ColumnCount = 2;
             tlp_ChannelDl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
             tlp_ChannelDl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tlp_ChannelDl.Controls.Add(btn_StopDownloads, 1, 2);
             tlp_ChannelDl.Controls.Add(groupBox_VideoSearch, 0, 2);
             tlp_ChannelDl.Controls.Add(btn_DownloadSelectedVideo, 1, 1);
             tlp_ChannelDl.Controls.Add(groupBox_Video, 0, 1);
@@ -327,14 +354,27 @@
             tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tlp_ChannelDl.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tlp_ChannelDl.Size = new Size(517, 180);
+            tlp_ChannelDl.Size = new Size(517, 166);
             tlp_ChannelDl.TabIndex = 0;
+            // 
+            // btn_StopDownloads
+            // 
+            btn_StopDownloads.Dock = DockStyle.Fill;
+            btn_StopDownloads.Font = new Font("Segoe UI", 7F);
+            btn_StopDownloads.Location = new Point(416, 113);
+            btn_StopDownloads.Name = "btn_StopDownloads";
+            btn_StopDownloads.Size = new Size(98, 50);
+            btn_StopDownloads.TabIndex = 15;
+            btn_StopDownloads.Text = "Stop Downloads";
+            btn_StopDownloads.UseVisualStyleBackColor = true;
+            btn_StopDownloads.Visible = false;
+            btn_StopDownloads.Click += StopDownload_Click;
             // 
             // groupBox_VideoSearch
             // 
             groupBox_VideoSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             groupBox_VideoSearch.Controls.Add(txt_VideoSearch);
-            groupBox_VideoSearch.Location = new Point(3, 125);
+            groupBox_VideoSearch.Location = new Point(3, 113);
             groupBox_VideoSearch.Name = "groupBox_VideoSearch";
             groupBox_VideoSearch.Size = new Size(407, 50);
             groupBox_VideoSearch.TabIndex = 14;
@@ -355,11 +395,11 @@
             // 
             btn_DownloadSelectedVideo.Dock = DockStyle.Fill;
             btn_DownloadSelectedVideo.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
-            btn_DownloadSelectedVideo.Location = new Point(416, 63);
+            btn_DownloadSelectedVideo.Location = new Point(416, 58);
             btn_DownloadSelectedVideo.Name = "btn_DownloadSelectedVideo";
-            btn_DownloadSelectedVideo.Size = new Size(98, 54);
+            btn_DownloadSelectedVideo.Size = new Size(98, 49);
             btn_DownloadSelectedVideo.TabIndex = 13;
-            btn_DownloadSelectedVideo.Text = "Download Video";
+            btn_DownloadSelectedVideo.Text = "Download Selected Video";
             btn_DownloadSelectedVideo.UseVisualStyleBackColor = true;
             btn_DownloadSelectedVideo.Click += Download_Click;
             // 
@@ -367,9 +407,9 @@
             // 
             groupBox_Video.Controls.Add(comboBox_Video);
             groupBox_Video.Dock = DockStyle.Fill;
-            groupBox_Video.Location = new Point(3, 63);
+            groupBox_Video.Location = new Point(3, 58);
             groupBox_Video.Name = "groupBox_Video";
-            groupBox_Video.Size = new Size(407, 54);
+            groupBox_Video.Size = new Size(407, 49);
             groupBox_Video.TabIndex = 12;
             groupBox_Video.TabStop = false;
             groupBox_Video.Text = "Selected Video";
@@ -390,7 +430,7 @@
             btn_DownloadAllVideos.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
             btn_DownloadAllVideos.Location = new Point(416, 3);
             btn_DownloadAllVideos.Name = "btn_DownloadAllVideos";
-            btn_DownloadAllVideos.Size = new Size(98, 54);
+            btn_DownloadAllVideos.Size = new Size(98, 49);
             btn_DownloadAllVideos.TabIndex = 11;
             btn_DownloadAllVideos.Text = "Download All Videos";
             btn_DownloadAllVideos.UseVisualStyleBackColor = true;
@@ -402,7 +442,7 @@
             groupBox_DownloadChannel.Dock = DockStyle.Fill;
             groupBox_DownloadChannel.Location = new Point(3, 3);
             groupBox_DownloadChannel.Name = "groupBox_DownloadChannel";
-            groupBox_DownloadChannel.Size = new Size(407, 54);
+            groupBox_DownloadChannel.Size = new Size(407, 49);
             groupBox_DownloadChannel.TabIndex = 1;
             groupBox_DownloadChannel.TabStop = false;
             groupBox_DownloadChannel.Text = "Channel";
@@ -422,12 +462,12 @@
             // 
             tableLayoutPanel_ChannelDownloader.SetColumnSpan(txt_DownloadLog, 2);
             txt_DownloadLog.Dock = DockStyle.Fill;
-            txt_DownloadLog.Location = new Point(3, 385);
+            txt_DownloadLog.Location = new Point(3, 361);
             txt_DownloadLog.Multiline = true;
             txt_DownloadLog.Name = "txt_DownloadLog";
             txt_DownloadLog.ReadOnly = true;
             txt_DownloadLog.ScrollBars = ScrollBars.Vertical;
-            txt_DownloadLog.Size = new Size(531, 64);
+            txt_DownloadLog.Size = new Size(531, 60);
             txt_DownloadLog.TabIndex = 3;
             // 
             // groupBox_Cmd
@@ -435,9 +475,9 @@
             tableLayoutPanel_ChannelDownloader.SetColumnSpan(groupBox_Cmd, 2);
             groupBox_Cmd.Controls.Add(txt_CmdArgs);
             groupBox_Cmd.Dock = DockStyle.Fill;
-            groupBox_Cmd.Location = new Point(3, 295);
+            groupBox_Cmd.Location = new Point(3, 277);
             groupBox_Cmd.Name = "groupBox_Cmd";
-            groupBox_Cmd.Size = new Size(531, 84);
+            groupBox_Cmd.Size = new Size(531, 78);
             groupBox_Cmd.TabIndex = 5;
             groupBox_Cmd.TabStop = false;
             groupBox_Cmd.Text = "Commandline Arguments";
@@ -449,7 +489,7 @@
             txt_CmdArgs.Multiline = true;
             txt_CmdArgs.Name = "txt_CmdArgs";
             txt_CmdArgs.ScrollBars = ScrollBars.Vertical;
-            txt_CmdArgs.Size = new Size(525, 58);
+            txt_CmdArgs.Size = new Size(525, 52);
             txt_CmdArgs.TabIndex = 0;
             txt_CmdArgs.TextChanged += Cmd_Changed;
             // 
@@ -457,9 +497,9 @@
             // 
             groupBox_Range.Controls.Add(tlp_TimeRange);
             groupBox_Range.Dock = DockStyle.Fill;
-            groupBox_Range.Location = new Point(3, 228);
+            groupBox_Range.Location = new Point(3, 214);
             groupBox_Range.Name = "groupBox_Range";
-            groupBox_Range.Size = new Size(422, 61);
+            groupBox_Range.Size = new Size(422, 57);
             groupBox_Range.TabIndex = 7;
             groupBox_Range.TabStop = false;
             groupBox_Range.Text = "Timestamp Range";
@@ -482,7 +522,7 @@
             tlp_TimeRange.Name = "tlp_TimeRange";
             tlp_TimeRange.RowCount = 1;
             tlp_TimeRange.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_TimeRange.Size = new Size(416, 35);
+            tlp_TimeRange.Size = new Size(416, 31);
             tlp_TimeRange.TabIndex = 0;
             // 
             // chk_UseTimeStampRange
@@ -492,7 +532,7 @@
             chk_UseTimeStampRange.Font = new Font("Segoe UI", 7F);
             chk_UseTimeStampRange.Location = new Point(325, 3);
             chk_UseTimeStampRange.Name = "chk_UseTimeStampRange";
-            chk_UseTimeStampRange.Size = new Size(88, 29);
+            chk_UseTimeStampRange.Size = new Size(88, 25);
             chk_UseTimeStampRange.TabIndex = 9;
             chk_UseTimeStampRange.Text = "Use Range";
             chk_UseTimeStampRange.UseVisualStyleBackColor = true;
@@ -502,7 +542,7 @@
             // 
             txt_to.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txt_to.Enabled = false;
-            txt_to.Location = new Point(233, 4);
+            txt_to.Location = new Point(233, 3);
             txt_to.Name = "txt_to";
             txt_to.ScrollBars = ScrollBars.Vertical;
             txt_to.Size = new Size(86, 27);
@@ -513,7 +553,7 @@
             // 
             txt_from.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txt_from.Enabled = false;
-            txt_from.Location = new Point(72, 4);
+            txt_from.Location = new Point(72, 3);
             txt_from.Name = "txt_from";
             txt_from.ScrollBars = ScrollBars.Vertical;
             txt_from.Size = new Size(86, 27);
@@ -524,7 +564,7 @@
             // 
             lbl_from.Anchor = AnchorStyles.Right;
             lbl_from.AutoSize = true;
-            lbl_from.Location = new Point(22, 7);
+            lbl_from.Location = new Point(22, 5);
             lbl_from.Name = "lbl_from";
             lbl_from.Size = new Size(44, 20);
             lbl_from.TabIndex = 0;
@@ -535,7 +575,7 @@
             // 
             lbl_to.Anchor = AnchorStyles.Right;
             lbl_to.AutoSize = true;
-            lbl_to.Location = new Point(201, 7);
+            lbl_to.Location = new Point(201, 5);
             lbl_to.Name = "lbl_to";
             lbl_to.Size = new Size(26, 20);
             lbl_to.TabIndex = 1;
@@ -548,31 +588,34 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(543, 458);
+            tabPage2.Size = new Size(543, 430);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Updater";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // groupBox_ytdlpver
+            // menuStrip1
             // 
-            groupBox_ytdlpver.Controls.Add(lbl_Version);
-            groupBox_ytdlpver.Dock = DockStyle.Fill;
-            groupBox_ytdlpver.Location = new Point(3, 93);
-            groupBox_ytdlpver.Name = "groupBox_ytdlpver";
-            groupBox_ytdlpver.Size = new Size(424, 61);
-            groupBox_ytdlpver.TabIndex = 4;
-            groupBox_ytdlpver.TabStop = false;
-            groupBox_ytdlpver.Text = "YT-DLP Version";
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolsToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(551, 28);
+            menuStrip1.TabIndex = 2;
+            menuStrip1.Text = "menuStrip1";
             // 
-            // lbl_Version
+            // toolsToolStripMenuItem
             // 
-            lbl_Version.AutoSize = true;
-            lbl_Version.Dock = DockStyle.Right;
-            lbl_Version.Location = new Point(421, 23);
-            lbl_Version.Name = "lbl_Version";
-            lbl_Version.Size = new Size(0, 20);
-            lbl_Version.TabIndex = 1;
-            lbl_Version.TextAlign = ContentAlignment.MiddleRight;
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(58, 24);
+            toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // checkMissingVideosToolStripMenuItem
+            // 
+            checkMissingVideosToolStripMenuItem.Name = "checkMissingVideosToolStripMenuItem";
+            checkMissingVideosToolStripMenuItem.Size = new Size(234, 26);
+            checkMissingVideosToolStripMenuItem.Text = "Check Missing Videos";
+            checkMissingVideosToolStripMenuItem.Click += CheckMissingVideos_Click;
             // 
             // YTVidListUpdater
             // 
@@ -580,12 +623,16 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(551, 491);
             Controls.Add(tabControl);
+            Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.2.3";
+            Text = "YTVideoListUpdater v1.2.4";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
+            groupBox_ytdlpver.ResumeLayout(false);
+            groupBox_ytdlpver.PerformLayout();
             groupBox_Channel.ResumeLayout(false);
             tabControl.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
@@ -608,9 +655,10 @@
             tlp_TimeRange.ResumeLayout(false);
             tlp_TimeRange.PerformLayout();
             tabPage2.ResumeLayout(false);
-            groupBox_ytdlpver.ResumeLayout(false);
-            groupBox_ytdlpver.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -654,5 +702,9 @@
         private Button btn_UpdateYTDLP;
         private GroupBox groupBox_ytdlpver;
         private Label lbl_Version;
+        private Button btn_StopDownloads;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem checkMissingVideosToolStripMenuItem;
     }
 }
