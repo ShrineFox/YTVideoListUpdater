@@ -14,8 +14,6 @@ namespace YTVideoListUpdater
 {
     public partial class YTVidListUpdater : Form
     {
-        public static string jsonPath;
-        public static Settings settings;
         public static List<YTVideo> videos;
         BindingSource bs = new BindingSource();
         BindingSource bs2 = new BindingSource();
@@ -27,6 +25,7 @@ namespace YTVideoListUpdater
             jsonPath = "./settings.json";
             InitializeComponent();
             LoadJson(jsonPath);
+            //SaveJson(jsonPath);
             bs.DataSource = settings.Channels;
             bs2.DataSource = settings.Channels;
             bs_videos.DataSource = videos;
@@ -37,10 +36,12 @@ namespace YTVideoListUpdater
             comboBox_Channel.DisplayMember = "Name";
             comboBox_ChannelDownload.DisplayMember = "Name";
             comboBox_Video.DisplayMember = "Title";
+            comboBox_Cookies.SelectedIndex = 0;
 
             txt_CmdArgs.Text = settings.CmdLineArgs;
             GetYTDLPVersion();
         }
+
         private async void ProcessChannel(YTChannel channel)
         {
             txt_Log.Text = $"Processing channel \"{channel.Name}\", please wait...";
@@ -101,44 +102,6 @@ namespace YTVideoListUpdater
 
             File.Copy(txtPath, outPath, true);
             txt_Log.Text = $"Saved video list to: \"{Path.GetFullPath(outPath)}\"";
-        }
-
-        public class Settings
-        {
-            [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
-            public List<YTChannel> Channels { get; set; } = new List<YTChannel>();
-
-            public string YTDlpExePath { get; set; } = "./yt-dlp.exe";
-            [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
-            public string CmdLineArgs { get; set; } = "";
-
-        }
-
-        public class YTChannel
-        {
-            public string Name { get; set; } = "";
-            public string ID { get; set; } = "";
-        }
-
-        public class YTVideo
-        {
-            public string URL { get; set; } = "";
-            public string Title { get; set; } = "";
-        }
-
-        public void SaveJson(string jsonPath)
-        {
-            //settings = new Settings() { Channels = new List<YTChannel>() { new YTChannel() { ID = "UCrB3t1zAQPwAeWtI8RZIOvQ", Name = "ShrineFox" } } };
-            File.WriteAllText(jsonPath, JsonConvert.SerializeObject(settings, Newtonsoft.Json.Formatting.Indented));
-        }
-
-        public void LoadJson(string jsonPath)
-        {
-            if (!File.Exists(jsonPath))
-                return;
-
-            string jsonText = File.ReadAllText(Path.GetFullPath(jsonPath));
-            settings = JsonConvert.DeserializeObject<Settings>(jsonText);
         }
 
         private void UpdateVideoList_Click(object sender, EventArgs e)
@@ -220,12 +183,7 @@ namespace YTVideoListUpdater
             bs_videos.DataSource = videos;
         }
 
-        private void Cmd_Changed(object sender, EventArgs e)
-        {
-            settings.CmdLineArgs = txt_CmdArgs.Text;
 
-            SaveJson(jsonPath);
-        }
 
         private void Search_KeyDown(object sender, KeyEventArgs e)
         {
@@ -402,16 +360,11 @@ namespace YTVideoListUpdater
             if (stopDownloads)
                 return;
 
-            string optionsText = txt_CmdArgs.Text;
-
-            if (chk_UseTimeStampRange.Checked)
-                optionsText += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
-
-            string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" {optionsText.Replace("\r", "").Replace("\n", " ")} {url}";
+            string args = GetYTDLPArgsFromSettings(url);
 
             if (chk_LaunchCmd.Checked)
             {
-                LaunchYTDLPCmdSilently(args);
+                LaunchYTDLPCmdSilently(args.Replace("\r", "").Replace("\n", " ") + $" {url}");
                 txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n{args}";
             }
             else
@@ -421,7 +374,7 @@ namespace YTVideoListUpdater
                     YoutubeDLPath = settings.YTDlpExePath
                 };
 
-                OptionSet options = OptionSet.FromString(optionsText.Split('\n'));
+                OptionSet options = OptionSet.FromString(args.Split('\n'));
 
                 var runResult = await ytdl.RunWithOptions(url, options);
 
@@ -434,6 +387,40 @@ namespace YTVideoListUpdater
                 txt_DownloadLog.Text += $"\r\n\r\nDone downloading \"{title}\".";
                 SystemSounds.Exclamation.Play();
             }
+        }
+
+        private string GetYTDLPArgsFromSettings(string videoURL)
+        {
+            string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" ";
+
+
+            args += $"\r\n--output \"{settings.OutputDir}\\{settings.TitleFormat}\"";
+            if (comboBox_Cookies.SelectedIndex != 0)
+                args += $"\r\n--cookies-from-browser \"{settings.CookiesFromBrowser.ToLower()}\"";
+            if (!string.IsNullOrEmpty(settings.FfmpegExePath))
+                args += $"\r\n--ffmpeg-location \"{Path.GetFullPath(settings.FfmpegExePath)}\"";
+            if (settings.AddMetadata)
+                args += $"\r\n--add-metadata";
+            if (settings.WriteThumbnail)
+                args += $"\r\n--write-thumbnail";
+            if (settings.WriteInfoJson)
+                args += $"\r\n--write-info-json";
+            if (settings.WriteDescription)
+                args += $"\r\n--write-description";
+            if (settings.WriteComments)
+                args += $"\r\n--write-comments";
+            if (settings.WriteSub)
+                args += $"\r\n--write-sub";
+            if (settings.WriteAutoSubs)
+                args += $"\r\n--write-auto-sub";
+            if (settings.EmbedSubs)
+                args += $"\r\n--embed-subs";
+
+            if (chk_UseTimeStampRange.Checked)
+                args += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+            args += $"\r\n{settings.CmdLineArgs}";
+
+            return args;
         }
 
         private string GetYTDLPVersion()
@@ -475,7 +462,7 @@ namespace YTVideoListUpdater
             }).Start();
 
             txt_Log.Text += $"\r\nYT-DLP is now up to date: {GetYTDLPVersion()}";
-
+            SystemSounds.Exclamation.Play();
         }
 
         private void StopDownload_Click(object sender, EventArgs e)
@@ -496,7 +483,7 @@ namespace YTVideoListUpdater
 
                 foreach (var video in videos)
                 {
-                    if (!files.Any(x => 
+                    if (!files.Any(x =>
                     x.Contains(video.Title.Replace("\"", "＂").Replace("?", "？").Replace(":", "：").Replace("/", "⧸"))
                     && (x.EndsWith(".mp4") || x.EndsWith(".mkv") || x.EndsWith(".webm"))
                     ))
@@ -504,9 +491,22 @@ namespace YTVideoListUpdater
                         txt_DownloadLog.Text += $"\r\nMissing video: {video.URL} | {video.Title}";
                     }
                 }
-
-                System.Windows.Forms.MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
             }
+
+            SystemSounds.Exclamation.Play();
         }
     }
+
+    public class YTChannel
+    {
+        public string Name { get; set; } = "";
+        public string ID { get; set; } = "";
+    }
+
+    public class YTVideo
+    {
+        public string URL { get; set; } = "";
+        public string Title { get; set; } = "";
+    }
+
 }
