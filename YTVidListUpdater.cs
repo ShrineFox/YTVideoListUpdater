@@ -480,9 +480,10 @@ namespace YTVideoListUpdater
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
             {
                 string[] files = Directory.GetFiles(folderBrowser.SelectedPath);
-
+                string tsv = "";
                 foreach (var video in videos)
                 {
+                    tsv += $"{video.URL}\t{video.Title}\t";
                     if (!files.Any(x =>
                     x.Contains(video.Title.Replace("\"", "＂").Replace("?", "？").Replace(":", "：").Replace("/", "⧸"))
                     && (x.EndsWith(".mp4") || x.EndsWith(".mkv") || x.EndsWith(".webm"))
@@ -490,7 +491,11 @@ namespace YTVideoListUpdater
                     {
                         txt_DownloadLog.Text += $"\r\nMissing video: {video.URL} | {video.Title}";
                     }
+                    else
+                        tsv += $"✔";
+                    tsv += $"\r\n";
                 }
+                File.WriteAllText("./VideoCheck.tsv", tsv);
             }
 
             SystemSounds.Exclamation.Play();
