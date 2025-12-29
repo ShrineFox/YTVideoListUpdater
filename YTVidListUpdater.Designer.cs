@@ -769,6 +769,7 @@
             txt_CmdArgs.ScrollBars = ScrollBars.Vertical;
             txt_CmdArgs.Size = new Size(531, 34);
             txt_CmdArgs.TabIndex = 0;
+            txt_CmdArgs.TextChanged += AdditionalArgs_TextChanged;
             // 
             // chk_WriteThumbnail
             // 

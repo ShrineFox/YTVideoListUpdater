@@ -125,14 +125,6 @@ namespace YTVideoListUpdater
             txt_CmdArgs.Text = settings.CmdLineArgs;
         }
 
-        private void AdditionalCmdArgs_TextChanged(object sender, EventArgs e)
-        {
-            var txt = (TextBox)sender;
-            settings.CmdLineArgs = txt.Text;
-            SaveJson(jsonPath);
-        }
-
-
         private void OutputDir_TextChanged(object sender, EventArgs e)
         {
             var txt = (TextBox)sender;
@@ -260,6 +252,13 @@ namespace YTVideoListUpdater
         {
             var chk = (CheckBox)sender;
             settings.EmbedSubs = chk.Checked;
+            SaveJson(jsonPath);
+        }
+
+        private void AdditionalArgs_TextChanged(object sender, EventArgs e)
+        {
+            var txt = (TextBox)sender;
+            settings.CmdLineArgs = txt.Text;
             SaveJson(jsonPath);
         }
     }
