@@ -481,7 +481,8 @@ namespace YTVideoListUpdater
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
             {
                 CheckIfVideosDownloaded(folderBrowser.SelectedPath);
-                OutputTSVOfDownloadedVideos("./VideoCheck.tsv");
+                var channel = (YTChannel)comboBox_ChannelDownload.SelectedItem;
+                OutputTSVOfDownloadedVideos($"./{channel.Name}_DownloadedVideosList.tsv");
             }
 
             SystemSounds.Exclamation.Play();
@@ -499,6 +500,9 @@ namespace YTVideoListUpdater
                 }
                 tsvText += $"\r\n";
             }
+            txt_DownloadLog.Text = $"Saved currently downloaded video list to: {outputPath}";
+            SystemSounds.Exclamation.Play();
+
             File.WriteAllText(outputPath, tsvText);
         }
 
@@ -519,6 +523,37 @@ namespace YTVideoListUpdater
                         break;
                     }
                 }
+            }
+        }
+
+        private void LoadVideoDownloadTSV(string tsvPath)
+        {
+            if (!File.Exists(tsvPath))
+            {
+                txt_DownloadLog.Text = $"Could not find file: {tsvPath}";
+                return;
+            }
+
+            foreach (var tsvLine in File.ReadAllLines(tsvPath).Where(x => x.Contains("✔")))
+            {
+                string url = tsvLine.Split('\t')[0];
+                if (videos.Any(x => x.URL == url))
+                    videos.First(x => x.URL == url).IsDownloaded = true;
+            }
+            txt_DownloadLog.Text = $"Updated the currently downloaded video list from: {tsvPath}";
+            SystemSounds.Exclamation.Play();
+        }
+
+        private void LoadDownloadedVideoList_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select downloaded videos TSV for currently selected channel";
+            openFileDialog.Filter = "Tab Separated Value files (*.tsv)|*.tsv";
+
+            var result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                LoadVideoDownloadTSV(openFileDialog.FileName);
             }
         }
     }

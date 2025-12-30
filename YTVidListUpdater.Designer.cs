@@ -98,6 +98,7 @@
             menuStrip1 = new MenuStrip();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             checkMissingVideosToolStripMenuItem = new ToolStripMenuItem();
+            loadDownloadedVideoListToolStripMenuItem = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
             groupBox_ytdlpver.SuspendLayout();
             groupBox_Channel.SuspendLayout();
@@ -974,7 +975,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
@@ -982,9 +983,16 @@
             // checkMissingVideosToolStripMenuItem
             // 
             checkMissingVideosToolStripMenuItem.Name = "checkMissingVideosToolStripMenuItem";
-            checkMissingVideosToolStripMenuItem.Size = new Size(234, 26);
+            checkMissingVideosToolStripMenuItem.Size = new Size(284, 26);
             checkMissingVideosToolStripMenuItem.Text = "Check Missing Videos";
             checkMissingVideosToolStripMenuItem.Click += CheckMissingVideos_Click;
+            // 
+            // loadDownloadedVideoListToolStripMenuItem
+            // 
+            loadDownloadedVideoListToolStripMenuItem.Name = "loadDownloadedVideoListToolStripMenuItem";
+            loadDownloadedVideoListToolStripMenuItem.Size = new Size(284, 26);
+            loadDownloadedVideoListToolStripMenuItem.Text = "Load Downloaded Video List";
+            loadDownloadedVideoListToolStripMenuItem.Click += LoadDownloadedVideoList_Click;
             // 
             // YTVidListUpdater
             // 
@@ -1116,5 +1124,6 @@
         private TextBox txt_FFMPEGPath;
         private GroupBox groupBox_TitleFormat;
         private TextBox txt_TitleFormat;
+        private ToolStripMenuItem loadDownloadedVideoListToolStripMenuItem;
     }
 }
