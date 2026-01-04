@@ -491,16 +491,19 @@ namespace YTVideoListUpdater
         private void OutputTSVOfDownloadedVideos(string outputPath)
         {
             string tsvText = "";
+            int dlcount = 0;
             foreach (var video in videos)
             {
                 tsvText += $"{video.URL}\t{video.Title}\t";
                 if (video.IsDownloaded)
                 {
                     tsvText += $"✔";
+                    dlcount++;
                 }
                 tsvText += $"\r\n";
             }
             txt_DownloadLog.Text = $"Saved currently downloaded video list to: {outputPath}";
+            txt_DownloadLog.Text = $"Downloaded {dlcount} / {videos.Count} ({(dlcount / videos.Count) * 100}%)";
             SystemSounds.Exclamation.Play();
 
             File.WriteAllText(outputPath, tsvText);
