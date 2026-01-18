@@ -75,9 +75,8 @@ namespace YTVideoListUpdater
                     new YTChannel() { ID = "UC2_IYqb1Tc_8Azh7rByedPA", Name = "FullSauce" },
                     new YTChannel() { ID = "UCo03CCLE1x34004iBmjcHnA", Name = "TwitchClipSauce" },
                     new YTChannel() { ID = "UCHEVjnU0KXhr-HDrlwoBm2g", Name = "ExtraSauce" },
-                    new YTChannel() { ID = "UCrB3t1zAQPwAeWtI8RZIOvQ", Name = "ShrineFox" }
                 },
-                OutputDir = @"B:\Videos\Vinesauce\Highlights",
+                OutputDir = @"./",
                 TitleFormat = "%(title)s.%(ext)s",
                 YTDlpExePath = "./yt-dlp.exe",
                 WriteInfoJson = true,
@@ -88,7 +87,7 @@ namespace YTVideoListUpdater
                 WriteSub = true,
                 EmbedSubs = true,
                 WriteAutoSubs = true,
-                CmdLineArgs = "-vU\r\n--cookies-from-browser firefox\r\n--limit-rate 400000"
+                CmdLineArgs = ""
             };
         }
 
@@ -96,7 +95,7 @@ namespace YTVideoListUpdater
         {
             if (!File.Exists(jsonPath))
             {
-                LoadJson(jsonPath);
+                SaveJson(jsonPath);
             }
 
             string jsonText = File.ReadAllText(Path.GetFullPath(jsonPath));

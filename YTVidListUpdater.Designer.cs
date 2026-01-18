@@ -99,6 +99,8 @@
             toolsToolStripMenuItem = new ToolStripMenuItem();
             checkMissingVideosToolStripMenuItem = new ToolStripMenuItem();
             loadDownloadedVideoListToolStripMenuItem = new ToolStripMenuItem();
+            cmdOptionsToolStripMenuItem = new ToolStripMenuItem();
+            chk_KeepCmdOpen = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
             groupBox_ytdlpver.SuspendLayout();
             groupBox_Channel.SuspendLayout();
@@ -966,7 +968,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolsToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolsToolStripMenuItem, cmdOptionsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(551, 28);
@@ -994,6 +996,20 @@
             loadDownloadedVideoListToolStripMenuItem.Text = "Load Downloaded Video List";
             loadDownloadedVideoListToolStripMenuItem.Click += LoadDownloadedVideoList_Click;
             // 
+            // cmdOptionsToolStripMenuItem
+            // 
+            cmdOptionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chk_KeepCmdOpen });
+            cmdOptionsToolStripMenuItem.Name = "cmdOptionsToolStripMenuItem";
+            cmdOptionsToolStripMenuItem.Size = new Size(110, 24);
+            cmdOptionsToolStripMenuItem.Text = "Cmd Options";
+            // 
+            // chk_KeepCmdOpen
+            // 
+            chk_KeepCmdOpen.CheckOnClick = true;
+            chk_KeepCmdOpen.Name = "chk_KeepCmdOpen";
+            chk_KeepCmdOpen.Size = new Size(201, 26);
+            chk_KeepCmdOpen.Text = "Keep Cmd Open";
+            // 
             // YTVidListUpdater
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1005,7 +1021,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.3.1";
+            Text = "YTVideoListUpdater v1.4.1";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_ytdlpver.ResumeLayout(false);
@@ -1125,5 +1141,7 @@
         private GroupBox groupBox_TitleFormat;
         private TextBox txt_TitleFormat;
         private ToolStripMenuItem loadDownloadedVideoListToolStripMenuItem;
+        private ToolStripMenuItem cmdOptionsToolStripMenuItem;
+        private ToolStripMenuItem chk_KeepCmdOpen;
     }
 }

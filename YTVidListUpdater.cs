@@ -365,6 +365,8 @@ namespace YTVideoListUpdater
 
             if (chk_LaunchCmd.Checked)
             {
+                if (chk_KeepCmdOpen.Checked)
+                    KeepOpenCmd(args.Replace("\r", "").Replace("\n", " ") + $" {url}");
                 LaunchYTDLPCmdSilently(args.Replace("\r", "").Replace("\n", " ") + $" {url}");
                 txt_DownloadLog.Text += $"\r\nLaunching command prompt:\r\n{args}";
             }
@@ -390,12 +392,32 @@ namespace YTVideoListUpdater
             }
         }
 
+        private void KeepOpenCmd(string args)
+        {
+            string exePath = Path.GetFullPath(settings.YTDlpExePath);
+
+            // Escape quotes for cmd.exe
+            string escapedArgs = args.Replace("\"", "\\\"");
+
+            using (Process p = new Process())
+            {
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.UseShellExecute = true;
+
+                p.StartInfo.Arguments =
+                    $"/k \"\"{exePath}\" {escapedArgs}\"";
+
+                p.Start();
+                p.WaitForExit();
+            }
+        }
+
         private string GetYTDLPArgsFromSettings(string videoURL)
         {
+            
             string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" ";
 
-
-            args += $"\r\n--output \"{settings.OutputDir}\\{settings.TitleFormat}\"";
+                args += $"\r\n--output \"{settings.OutputDir}\\{settings.TitleFormat}\"";
             if (comboBox_Cookies.SelectedIndex != 0)
                 args += $"\r\n--cookies-from-browser \"{settings.CookiesFromBrowser.ToLower()}\"";
             if (!string.IsNullOrEmpty(settings.FfmpegExePath))
@@ -427,19 +449,22 @@ namespace YTVideoListUpdater
         private string GetYTDLPVersion()
         {
             string output = "";
-            using (Process p = new Process())
+            if (File.Exists(settings.YTDlpExePath))
             {
-                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
-                p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
-                p.StartInfo.Arguments = "--version";
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.CreateNoWindow = true;
-                p.Start();
-                output = p.StandardOutput.ReadToEnd();
-                p.WaitForExit();
+                using (Process p = new Process())
+                {
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+                    p.StartInfo.FileName = Path.GetFullPath(settings.YTDlpExePath);
+                    p.StartInfo.Arguments = "--version";
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    output = p.StandardOutput.ReadToEnd();
+                    p.WaitForExit();
+                }
+                lbl_Version.Text = output;
             }
-            lbl_Version.Text = output;
             return output;
         }
 
