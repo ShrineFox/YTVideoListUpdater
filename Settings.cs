@@ -112,7 +112,7 @@ namespace YTVideoListUpdater
             txt_TitleFormat.Text = settings.TitleFormat;
             txt_YTDLPPath.Text = settings.YTDlpExePath;
             txt_FFMPEGPath.Text = settings.FfmpegExePath;
-            comboBox_Cookies.SelectedItem = settings.CookiesFromBrowser;
+            comboBox_Cookies.SelectedIndex = comboBox_Cookies.Items.IndexOf(settings.CookiesFromBrowser);
             chk_AddMetadata.Checked = settings.AddMetadata;
             chk_WriteThumbnail.Checked = settings.WriteThumbnail;
             chk_WriteInfoJson.Checked = settings.WriteInfoJson;

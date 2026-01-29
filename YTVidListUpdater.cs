@@ -36,7 +36,6 @@ namespace YTVideoListUpdater
             comboBox_Channel.DisplayMember = "Name";
             comboBox_ChannelDownload.DisplayMember = "Name";
             comboBox_Video.DisplayMember = "Title";
-            comboBox_Cookies.SelectedIndex = 0;
 
             txt_CmdArgs.Text = settings.CmdLineArgs;
             GetYTDLPVersion();
@@ -414,12 +413,12 @@ namespace YTVideoListUpdater
 
         private string GetYTDLPArgsFromSettings(string videoURL)
         {
-            
+
             string args = $"\"{Path.GetFullPath(settings.YTDlpExePath)}\" ";
 
-                args += $"\r\n--output \"{settings.OutputDir}\\{settings.TitleFormat}\"";
-            if (comboBox_Cookies.SelectedIndex != 0)
-                args += $"\r\n--cookies-from-browser \"{settings.CookiesFromBrowser.ToLower()}\"";
+            args += $"\r\n--output \"{settings.OutputDir}\\{settings.TitleFormat}\"";
+            if (!string.IsNullOrEmpty(settings.CookiesFromBrowser.Replace("None", "")))
+                args += $"\r\n--cookies-from-browser {settings.CookiesFromBrowser.ToLower()}";
             if (!string.IsNullOrEmpty(settings.FfmpegExePath))
                 args += $"\r\n--ffmpeg-location \"{Path.GetFullPath(settings.FfmpegExePath)}\"";
             if (settings.AddMetadata)
