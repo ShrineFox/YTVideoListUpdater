@@ -101,6 +101,7 @@
             loadDownloadedVideoListToolStripMenuItem = new ToolStripMenuItem();
             cmdOptionsToolStripMenuItem = new ToolStripMenuItem();
             chk_KeepCmdOpen = new ToolStripMenuItem();
+            selectNextMissingVideoToolStripMenuItem = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
             groupBox_ytdlpver.SuspendLayout();
             groupBox_Channel.SuspendLayout();
@@ -977,7 +978,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem, selectNextMissingVideoToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
@@ -1009,6 +1010,13 @@
             chk_KeepCmdOpen.Name = "chk_KeepCmdOpen";
             chk_KeepCmdOpen.Size = new Size(201, 26);
             chk_KeepCmdOpen.Text = "Keep Cmd Open";
+            // 
+            // selectNextMissingVideoToolStripMenuItem
+            // 
+            selectNextMissingVideoToolStripMenuItem.Name = "selectNextMissingVideoToolStripMenuItem";
+            selectNextMissingVideoToolStripMenuItem.Size = new Size(284, 26);
+            selectNextMissingVideoToolStripMenuItem.Text = "Select Next Missing Video";
+            selectNextMissingVideoToolStripMenuItem.Click += SelectNextMissingVideo_Click;
             // 
             // YTVidListUpdater
             // 
@@ -1143,5 +1151,6 @@
         private ToolStripMenuItem loadDownloadedVideoListToolStripMenuItem;
         private ToolStripMenuItem cmdOptionsToolStripMenuItem;
         private ToolStripMenuItem chk_KeepCmdOpen;
+        private ToolStripMenuItem selectNextMissingVideoToolStripMenuItem;
     }
 }

@@ -538,7 +538,7 @@ namespace YTVideoListUpdater
             string[] extensions = new string[] { ".mp4", ".mkv", ".webm" };
             foreach (var video in videos)
             {
-                string normalizedTitle = video.Title.Replace("\"", "＂").Replace("?", "？").Replace(":", "：").Replace("/", "⧸");
+                string normalizedTitle = video.Title.Replace("\"", "＂").Replace("?", "？").Replace(":", "：").Replace("/", "⧸").Replace("*", "＊");
 
                 video.IsDownloaded = false;
                 foreach (var ext in extensions)
@@ -581,6 +581,32 @@ namespace YTVideoListUpdater
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
                 LoadVideoDownloadTSV(openFileDialog.FileName);
+            }
+        }
+
+        private void SelectNextMissingVideo_Click(object sender, EventArgs e)
+        {
+            var currentSelectedVid = (YTVideo)comboBox_Video.SelectedItem;
+
+            int i = comboBox_Video.SelectedIndex + 1;
+
+            while (i < comboBox_Video.Items.Count)
+            {
+                if (i == comboBox_Video.SelectedIndex)
+                    return;
+
+                var vid = (YTVideo)comboBox_Video.Items[i];
+
+                if (vid.IsDownloaded == false)
+                {
+                    comboBox_Video.SelectedItem = vid;
+                    return;
+                }
+
+                if (i == comboBox_Video.Items.Count - 1)
+                    i = 0;
+                else
+                    i++;
             }
         }
     }
