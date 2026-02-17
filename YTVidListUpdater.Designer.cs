@@ -102,6 +102,7 @@
             loadDownloadedVideoListToolStripMenuItem = new ToolStripMenuItem();
             selectNextMissingVideoToolStripMenuItem = new ToolStripMenuItem();
             getViewCountOfVideoInListToolStripMenuItem = new ToolStripMenuItem();
+            addMetadataFromTSVToolStripMenuItem = new ToolStripMenuItem();
             cmdOptionsToolStripMenuItem = new ToolStripMenuItem();
             chk_KeepCmdOpen = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
@@ -257,7 +258,7 @@
             tabControl.Location = new Point(0, 28);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(551, 463);
+            tabControl.Size = new Size(667, 463);
             tabControl.TabIndex = 1;
             // 
             // tabPage1
@@ -266,7 +267,7 @@
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(543, 430);
+            tabPage1.Size = new Size(659, 430);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Downloader";
             tabPage1.UseVisualStyleBackColor = true;
@@ -289,7 +290,7 @@
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_ChannelDownloader.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel_ChannelDownloader.Size = new Size(537, 424);
+            tableLayoutPanel_ChannelDownloader.Size = new Size(653, 424);
             tableLayoutPanel_ChannelDownloader.TabIndex = 1;
             // 
             // chk_LaunchCmd
@@ -299,9 +300,9 @@
             chk_LaunchCmd.CheckState = CheckState.Checked;
             chk_LaunchCmd.Dock = DockStyle.Fill;
             chk_LaunchCmd.Font = new Font("Segoe UI", 8F);
-            chk_LaunchCmd.Location = new Point(431, 256);
+            chk_LaunchCmd.Location = new Point(523, 256);
             chk_LaunchCmd.Name = "chk_LaunchCmd";
-            chk_LaunchCmd.Size = new Size(103, 78);
+            chk_LaunchCmd.Size = new Size(127, 78);
             chk_LaunchCmd.TabIndex = 16;
             chk_LaunchCmd.Text = "Launch Cmd";
             chk_LaunchCmd.UseVisualStyleBackColor = true;
@@ -316,7 +317,7 @@
             tabControl_DlType.Name = "tabControl_DlType";
             tableLayoutPanel_ChannelDownloader.SetRowSpan(tabControl_DlType, 2);
             tabControl_DlType.SelectedIndex = 0;
-            tabControl_DlType.Size = new Size(531, 247);
+            tabControl_DlType.Size = new Size(647, 247);
             tabControl_DlType.TabIndex = 12;
             // 
             // tabPage4
@@ -325,7 +326,7 @@
             tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(523, 214);
+            tabPage4.Size = new Size(639, 214);
             tabPage4.TabIndex = 0;
             tabPage4.Text = "Video";
             tabPage4.UseVisualStyleBackColor = true;
@@ -346,16 +347,16 @@
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel_VideoDownloader.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel_VideoDownloader.Size = new Size(517, 208);
+            tableLayoutPanel_VideoDownloader.Size = new Size(633, 208);
             tableLayoutPanel_VideoDownloader.TabIndex = 3;
             // 
             // btn_DownloadURL
             // 
             btn_DownloadURL.Dock = DockStyle.Fill;
             btn_DownloadURL.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
-            btn_DownloadURL.Location = new Point(416, 3);
+            btn_DownloadURL.Location = new Point(509, 3);
             btn_DownloadURL.Name = "btn_DownloadURL";
-            btn_DownloadURL.Size = new Size(98, 202);
+            btn_DownloadURL.Size = new Size(121, 202);
             btn_DownloadURL.TabIndex = 1;
             btn_DownloadURL.Text = "Download Video";
             btn_DownloadURL.UseVisualStyleBackColor = true;
@@ -367,7 +368,7 @@
             groupBox_DownloadURL.Dock = DockStyle.Fill;
             groupBox_DownloadURL.Location = new Point(3, 3);
             groupBox_DownloadURL.Name = "groupBox_DownloadURL";
-            groupBox_DownloadURL.Size = new Size(407, 202);
+            groupBox_DownloadURL.Size = new Size(500, 202);
             groupBox_DownloadURL.TabIndex = 6;
             groupBox_DownloadURL.TabStop = false;
             groupBox_DownloadURL.Text = "Video URL";
@@ -378,7 +379,7 @@
             txt_VideoURL.Location = new Point(3, 23);
             txt_VideoURL.Name = "txt_VideoURL";
             txt_VideoURL.ScrollBars = ScrollBars.Vertical;
-            txt_VideoURL.Size = new Size(401, 27);
+            txt_VideoURL.Size = new Size(494, 27);
             txt_VideoURL.TabIndex = 1;
             // 
             // tabPage5
@@ -523,7 +524,7 @@
             txt_DownloadLog.Name = "txt_DownloadLog";
             txt_DownloadLog.ReadOnly = true;
             txt_DownloadLog.ScrollBars = ScrollBars.Vertical;
-            txt_DownloadLog.Size = new Size(531, 81);
+            txt_DownloadLog.Size = new Size(647, 81);
             txt_DownloadLog.TabIndex = 3;
             // 
             // groupBox_Range
@@ -532,7 +533,7 @@
             groupBox_Range.Dock = DockStyle.Fill;
             groupBox_Range.Location = new Point(3, 256);
             groupBox_Range.Name = "groupBox_Range";
-            groupBox_Range.Size = new Size(422, 78);
+            groupBox_Range.Size = new Size(514, 78);
             groupBox_Range.TabIndex = 7;
             groupBox_Range.TabStop = false;
             groupBox_Range.Text = "Timestamp Range";
@@ -555,7 +556,7 @@
             tlp_TimeRange.Name = "tlp_TimeRange";
             tlp_TimeRange.RowCount = 1;
             tlp_TimeRange.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_TimeRange.Size = new Size(416, 52);
+            tlp_TimeRange.Size = new Size(508, 52);
             tlp_TimeRange.TabIndex = 0;
             // 
             // chk_UseTimeStampRange
@@ -563,9 +564,9 @@
             chk_UseTimeStampRange.AutoSize = true;
             chk_UseTimeStampRange.Dock = DockStyle.Fill;
             chk_UseTimeStampRange.Font = new Font("Segoe UI", 7F);
-            chk_UseTimeStampRange.Location = new Point(325, 3);
+            chk_UseTimeStampRange.Location = new Point(395, 3);
             chk_UseTimeStampRange.Name = "chk_UseTimeStampRange";
-            chk_UseTimeStampRange.Size = new Size(88, 46);
+            chk_UseTimeStampRange.Size = new Size(110, 46);
             chk_UseTimeStampRange.TabIndex = 9;
             chk_UseTimeStampRange.Text = "Use Range";
             chk_UseTimeStampRange.UseVisualStyleBackColor = true;
@@ -575,10 +576,10 @@
             // 
             txt_to.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txt_to.Enabled = false;
-            txt_to.Location = new Point(233, 12);
+            txt_to.Location = new Point(283, 12);
             txt_to.Name = "txt_to";
             txt_to.ScrollBars = ScrollBars.Vertical;
-            txt_to.Size = new Size(86, 27);
+            txt_to.Size = new Size(106, 27);
             txt_to.TabIndex = 3;
             txt_to.Text = "00:02:00";
             // 
@@ -586,10 +587,10 @@
             // 
             txt_from.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txt_from.Enabled = false;
-            txt_from.Location = new Point(72, 12);
+            txt_from.Location = new Point(87, 12);
             txt_from.Name = "txt_from";
             txt_from.ScrollBars = ScrollBars.Vertical;
-            txt_from.Size = new Size(86, 27);
+            txt_from.Size = new Size(106, 27);
             txt_from.TabIndex = 2;
             txt_from.Text = "00:01:00";
             // 
@@ -597,7 +598,7 @@
             // 
             lbl_from.Anchor = AnchorStyles.Right;
             lbl_from.AutoSize = true;
-            lbl_from.Location = new Point(22, 16);
+            lbl_from.Location = new Point(37, 16);
             lbl_from.Name = "lbl_from";
             lbl_from.Size = new Size(44, 20);
             lbl_from.TabIndex = 0;
@@ -608,7 +609,7 @@
             // 
             lbl_to.Anchor = AnchorStyles.Right;
             lbl_to.AutoSize = true;
-            lbl_to.Location = new Point(201, 16);
+            lbl_to.Location = new Point(251, 16);
             lbl_to.Name = "lbl_to";
             lbl_to.Size = new Size(26, 20);
             lbl_to.TabIndex = 1;
@@ -988,13 +989,13 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolsToolStripMenuItem, cmdOptionsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(551, 28);
+            menuStrip1.Size = new Size(667, 28);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem, selectNextMissingVideoToolStripMenuItem, getViewCountOfVideoInListToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem, selectNextMissingVideoToolStripMenuItem, getViewCountOfVideoInListToolStripMenuItem, addMetadataFromTSVToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
@@ -1027,6 +1028,13 @@
             getViewCountOfVideoInListToolStripMenuItem.Text = "Get View Count of Videos in List";
             getViewCountOfVideoInListToolStripMenuItem.Click += GetViewCounts_Click;
             // 
+            // addMetadataFromTSVToolStripMenuItem
+            // 
+            addMetadataFromTSVToolStripMenuItem.Name = "addMetadataFromTSVToolStripMenuItem";
+            addMetadataFromTSVToolStripMenuItem.Size = new Size(303, 26);
+            addMetadataFromTSVToolStripMenuItem.Text = "Add Metadata from TSV";
+            addMetadataFromTSVToolStripMenuItem.Click += AddMetadataFromTSV;
+            // 
             // cmdOptionsToolStripMenuItem
             // 
             cmdOptionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chk_KeepCmdOpen });
@@ -1045,14 +1053,14 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(551, 491);
+            ClientSize = new Size(667, 491);
             Controls.Add(tabControl);
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.4.2";
+            Text = "YTVideoListUpdater v1.4.3";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_ytdlpver.ResumeLayout(false);
@@ -1177,5 +1185,6 @@
         private ToolStripMenuItem selectNextMissingVideoToolStripMenuItem;
         private ToolStripMenuItem getViewCountOfVideoInListToolStripMenuItem;
         private Button btn_InstallDeno;
+        private ToolStripMenuItem addMetadataFromTSVToolStripMenuItem;
     }
 }

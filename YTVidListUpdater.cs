@@ -37,9 +37,17 @@ namespace YTVideoListUpdater
             comboBox_Channel.DisplayMember = "Name";
             comboBox_ChannelDownload.DisplayMember = "Name";
             comboBox_Video.DisplayMember = "Title";
+            comboBox_Video.FormattingEnabled = true;
+            comboBox_Video.Format += VideoComboBox_Format;
 
             txt_CmdArgs.Text = settings.CmdLineArgs;
             GetYTDLPVersion();
+        }
+
+        private void VideoComboBox_Format(object? sender, ListControlConvertEventArgs e)
+        {
+            YTVideo vid = (YTVideo)e.ListItem;
+            e.Value = $"{vid.Title} | views: {vid.ViewCount} | {vid.Date}";
         }
 
         private async void ProcessChannel(YTChannel channel)
@@ -177,8 +185,28 @@ namespace YTVideoListUpdater
             else
                 videos = new List<YTVideo>();
 
-            foreach (var line in File.ReadAllLines(channel.Name + ".tsv"))
-                videos.Add(new YTVideo() { URL = line.Split('\t')[0], Title = line.Split('\t')[1] });
+            var tsvLines = File.ReadAllLines(channel.Name + ".tsv");
+            foreach (var line in tsvLines)
+            {
+                var splitLines = line.Split('\t');
+                string url = splitLines[0];
+                string title = splitLines[1];
+                string isDownloadedCheckmark = "";
+                string viewCount = "";
+                string uploadDate = "";
+
+                if (splitLines.Length == 5)
+                {
+                    isDownloadedCheckmark = splitLines[2];
+                    viewCount = splitLines[3];
+                    uploadDate = splitLines[4];
+                }
+
+                videos.Add(new YTVideo() { URL = url, Title = title, 
+                    IsDownloaded = !string.IsNullOrEmpty(isDownloadedCheckmark), 
+                    ViewCount = viewCount, Date = uploadDate });
+
+            }
             bs_videos.DataSource = null;
             bs_videos.DataSource = videos;
         }
@@ -463,7 +491,7 @@ namespace YTVideoListUpdater
                     output = p.StandardOutput.ReadToEnd();
                     p.WaitForExit();
                 }
-                lbl_Version.Text = output;
+                lbl_Version.Text = output + $"\r\nIs Deno installed: {File.Exists("%USERPROFILE%\\.deno\\bin\\deno.exe")}";
             }
             return output;
         }
@@ -525,7 +553,7 @@ namespace YTVideoListUpdater
                     tsvText += $"✔";
                     dlcount++;
                 }
-                tsvText += $"\r\n";
+                tsvText += $"\t{video.ViewCount}\t{video.Date}\r\n";
             }
             txt_DownloadLog.Text = $"Saved currently downloaded video list to: {outputPath}";
             txt_DownloadLog.Text = $"Downloaded {dlcount} / {videos.Count} ({(dlcount / videos.Count) * 100}%)";
@@ -618,68 +646,38 @@ namespace YTVideoListUpdater
 
         private async void GetMetadata()
         {
-            string outPath = "./videoListWithMetadata.tsv";
+            txt_DownloadLog.Text = "Fetching video metadata, please wait. This can take some time...\r\n" +
+            "If you see warnings below, the program is still working. Blame YouTube for how long this takes.\r\n";
 
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "Select TSV spreadsheet of video URLs";
-            openFileDialog.Filter = "Tab Separated Value files (*.tsv)|*.tsv";
-
-            var result = openFileDialog.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            foreach (var video in videos)
             {
-                txt_DownloadLog.Text = "Fetching video metadata, please wait. This can take some time...\r\n" +
-                "If you see warnings below, the program is still working. Blame YouTube for how long this takes.\r\n";
-                
-                // Overwrite output TSV file with blank one
-                File.WriteAllText(outPath, "");
+                // Skip fetching metadata if we already have it
+                if (!string.IsNullOrEmpty(video.ViewCount) && !string.IsNullOrEmpty(video.Date))
+                    continue;
 
-                foreach (var tsvLine in File.ReadAllLines(openFileDialog.FileName))
+                var ytdl = new YoutubeDL
                 {
-                    var splitLines = tsvLine.Split('\t');
+                    YoutubeDLPath = settings.YTDlpExePath
+                };
 
-                    string title = tsvLine.Split('\t')[0];
-                    string url = tsvLine.Split('\t')[1];
-                    string isDownloadedCheckmark = "";
-                    string viewCount = "";
-                    string uploadDate = "";
+                var runResult = await ytdl.RunVideoDataFetch(video.URL);
+                VideoData vidMetadata = runResult.Data;
 
-                    if (splitLines.Length == 5)
-                    {
-                        isDownloadedCheckmark = tsvLine.Split('\t')[2];
-                        viewCount = tsvLine.Split('\t')[3];
-                        uploadDate = tsvLine.Split('\t')[4];
-                    }
-
-                    // Skip fetching metadata if we already have it
-                    if (!string.IsNullOrEmpty(viewCount) && !string.IsNullOrEmpty(uploadDate))
-                        continue;
-                    
-                    string newLine = "";
-
-                    var ytdl = new YoutubeDL
-                    {
-                        YoutubeDLPath = settings.YTDlpExePath
-                    };
-
-                    var runResult = await ytdl.RunVideoDataFetch(url);
-                    VideoData vidMetadata = runResult.Data;
-
-                    if (runResult.Data == null)
-                    {
-                        txt_DownloadLog.Text += $"\r\n\t[WARN] Failed to get metadata for: {url}";
-                        newLine += $"{title}\t{url}\r\n";
-                        continue;
-                    }
-
-                    newLine += $"{title}\t{url}\t{isDownloadedCheckmark}\t{vidMetadata.ViewCount}\t{vidMetadata.UploadDate}\t";
-                    newLine += $"\r\n";
-                    File.AppendAllText(outPath, newLine);
+                if (runResult.Data == null)
+                {
+                    txt_DownloadLog.Text += $"\r\n\t[WARN] Failed to get metadata for: {video.Title}";
+                    continue;
                 }
 
-                txt_DownloadLog.Text = $"Saved video list with metadata to: {outPath}";
-                SystemSounds.Exclamation.Play();
+                video.ViewCount = vidMetadata.ViewCount.ToString();
+                video.Date = vidMetadata.UploadDate.ToString();
             }
+
+            txt_DownloadLog.Text = $"Done fetching metadata.";
+            OutputTSVOfDownloadedVideos("updatedMetadata.tsv");
+
+            SystemSounds.Exclamation.Play();
+            
         }
 
         private void InstallDeno_Click(object sender, EventArgs e)
@@ -705,6 +703,50 @@ namespace YTVideoListUpdater
             txt_Log.Text += $"\r\nDeno should now be ready to use.";
             SystemSounds.Exclamation.Play();
         }
+
+        private void AddMetadataFromTSV(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select TSV With Existing Metadata";
+            openFileDialog.Filter = "Tab Separated Value files (*.tsv)|*.tsv";
+
+            var result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                foreach (var tsvLine in File.ReadAllLines(openFileDialog.FileName))
+                {
+                    var splitLines = tsvLine.Split('\t');
+
+                    string url = tsvLine.Split('\t')[0];
+                    string title = tsvLine.Split('\t')[1];
+                    string isDownloadedCheckmark = "";
+                    string viewCount = "";
+                    string uploadDate = "";
+
+                    if (splitLines.Length == 5)
+                    {
+                        isDownloadedCheckmark = tsvLine.Split('\t')[2];
+                        viewCount = tsvLine.Split('\t')[3];
+                        uploadDate = tsvLine.Split('\t')[4];
+
+                        if (string.IsNullOrEmpty(viewCount) && string.IsNullOrEmpty(uploadDate))
+                            continue;
+
+                        if (videos.Any(x => x.Title == title))
+                        {
+                            var vid = videos.First(x => x.Title == title);
+                            vid.ViewCount = viewCount;
+                            vid.Date = uploadDate;
+                        }
+                    }
+                }
+
+                txt_DownloadLog.Text = $"Finished updating video list with metadata.";
+                SystemSounds.Exclamation.Play();
+
+                OutputTSVOfDownloadedVideos("updatedMetadata.tsv");
+            }
+        }
     }
 
     public class YTChannel
@@ -715,9 +757,11 @@ namespace YTVideoListUpdater
 
     public class YTVideo
     {
-        public string URL { get; set; } = "";
         public string Title { get; set; } = "";
+        public string URL { get; set; } = "";
         public bool IsDownloaded { get; set; } = false;
+        public string ViewCount { get; set; } = "";
+        public string Date { get; set; } = "";
     }
 
 }
