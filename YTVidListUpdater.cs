@@ -628,13 +628,34 @@ namespace YTVideoListUpdater
             var result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                string tsvText = "";
                 txt_DownloadLog.Text = "Fetching video metadata, please wait. This can take some time...\r\n" +
-                    "If you see warnings below, the program is still working. Blame YouTube for how long this takes.\r\n";
+                "If you see warnings below, the program is still working. Blame YouTube for how long this takes.\r\n";
+                
+                // Overwrite output TSV file with blank one
+                File.WriteAllText(outPath, "");
 
                 foreach (var tsvLine in File.ReadAllLines(openFileDialog.FileName))
                 {
-                    string url = tsvLine.Split('\t')[0];
+                    var splitLines = tsvLine.Split('\t');
+
+                    string title = tsvLine.Split('\t')[0];
+                    string url = tsvLine.Split('\t')[1];
+                    string isDownloadedCheckmark = "";
+                    string viewCount = "";
+                    string uploadDate = "";
+
+                    if (splitLines.Length == 5)
+                    {
+                        isDownloadedCheckmark = tsvLine.Split('\t')[2];
+                        viewCount = tsvLine.Split('\t')[3];
+                        uploadDate = tsvLine.Split('\t')[4];
+                    }
+
+                    // Skip fetching metadata if we already have it
+                    if (!string.IsNullOrEmpty(viewCount) && !string.IsNullOrEmpty(uploadDate))
+                        continue;
+                    
+                    string newLine = "";
 
                     var ytdl = new YoutubeDL
                     {
@@ -647,18 +668,17 @@ namespace YTVideoListUpdater
                     if (runResult.Data == null)
                     {
                         txt_DownloadLog.Text += $"\r\n\t[WARN] Failed to get metadata for: {url}";
-                        tsvText += $"{url}\r\n";
+                        newLine += $"{title}\t{url}\r\n";
                         continue;
                     }
 
-                    tsvText += $"{url}\t{vidMetadata.Title}\t{vidMetadata.ViewCount}\t{vidMetadata.UploadDate}\t";
-                    tsvText += $"\r\n";
+                    newLine += $"{title}\t{url}\t{isDownloadedCheckmark}\t{vidMetadata.ViewCount}\t{vidMetadata.UploadDate}\t";
+                    newLine += $"\r\n";
+                    File.AppendAllText(outPath, newLine);
                 }
 
                 txt_DownloadLog.Text = $"Saved video list with metadata to: {outPath}";
                 SystemSounds.Exclamation.Play();
-
-                File.WriteAllText(outPath, tsvText);
             }
         }
 
