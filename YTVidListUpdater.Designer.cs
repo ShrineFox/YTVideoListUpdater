@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YTVidListUpdater));
             tlp_ListUpdater = new TableLayoutPanel();
+            btn_InstallDeno = new Button();
             groupBox_ytdlpver = new GroupBox();
             lbl_Version = new Label();
             btn_UpdateYTDLP = new Button();
@@ -99,9 +100,10 @@
             toolsToolStripMenuItem = new ToolStripMenuItem();
             checkMissingVideosToolStripMenuItem = new ToolStripMenuItem();
             loadDownloadedVideoListToolStripMenuItem = new ToolStripMenuItem();
+            selectNextMissingVideoToolStripMenuItem = new ToolStripMenuItem();
+            getViewCountOfVideoInListToolStripMenuItem = new ToolStripMenuItem();
             cmdOptionsToolStripMenuItem = new ToolStripMenuItem();
             chk_KeepCmdOpen = new ToolStripMenuItem();
-            selectNextMissingVideoToolStripMenuItem = new ToolStripMenuItem();
             tlp_ListUpdater.SuspendLayout();
             groupBox_ytdlpver.SuspendLayout();
             groupBox_Channel.SuspendLayout();
@@ -139,28 +141,42 @@
             tlp_ListUpdater.ColumnCount = 2;
             tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80.0744858F));
             tlp_ListUpdater.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.9255123F));
+            tlp_ListUpdater.Controls.Add(btn_InstallDeno, 1, 2);
             tlp_ListUpdater.Controls.Add(groupBox_ytdlpver, 0, 1);
             tlp_ListUpdater.Controls.Add(btn_UpdateYTDLP, 1, 1);
             tlp_ListUpdater.Controls.Add(groupBox_Channel, 0, 0);
             tlp_ListUpdater.Controls.Add(btn_UpdateVideoList, 1, 0);
-            tlp_ListUpdater.Controls.Add(txt_Log, 0, 2);
+            tlp_ListUpdater.Controls.Add(txt_Log, 0, 3);
             tlp_ListUpdater.Dock = DockStyle.Fill;
             tlp_ListUpdater.Location = new Point(3, 3);
             tlp_ListUpdater.Name = "tlp_ListUpdater";
-            tlp_ListUpdater.RowCount = 3;
-            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
+            tlp_ListUpdater.RowCount = 4;
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 22.2222214F));
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            tlp_ListUpdater.RowStyles.Add(new RowStyle(SizeType.Percent, 44.4444427F));
             tlp_ListUpdater.Size = new Size(537, 424);
             tlp_ListUpdater.TabIndex = 0;
+            // 
+            // btn_InstallDeno
+            // 
+            btn_InstallDeno.Dock = DockStyle.Fill;
+            btn_InstallDeno.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_InstallDeno.Location = new Point(433, 167);
+            btn_InstallDeno.Name = "btn_InstallDeno";
+            btn_InstallDeno.Size = new Size(101, 64);
+            btn_InstallDeno.TabIndex = 5;
+            btn_InstallDeno.Text = "Install Deno";
+            btn_InstallDeno.UseVisualStyleBackColor = true;
+            btn_InstallDeno.Click += InstallDeno_Click;
             // 
             // groupBox_ytdlpver
             // 
             groupBox_ytdlpver.Controls.Add(lbl_Version);
             groupBox_ytdlpver.Dock = DockStyle.Fill;
-            groupBox_ytdlpver.Location = new Point(3, 87);
+            groupBox_ytdlpver.Location = new Point(3, 97);
             groupBox_ytdlpver.Name = "groupBox_ytdlpver";
-            groupBox_ytdlpver.Size = new Size(424, 57);
+            groupBox_ytdlpver.Size = new Size(424, 64);
             groupBox_ytdlpver.TabIndex = 4;
             groupBox_ytdlpver.TabStop = false;
             groupBox_ytdlpver.Text = "YT-DLP Version";
@@ -179,9 +195,9 @@
             // 
             btn_UpdateYTDLP.Dock = DockStyle.Fill;
             btn_UpdateYTDLP.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_UpdateYTDLP.Location = new Point(433, 87);
+            btn_UpdateYTDLP.Location = new Point(433, 97);
             btn_UpdateYTDLP.Name = "btn_UpdateYTDLP";
-            btn_UpdateYTDLP.Size = new Size(101, 57);
+            btn_UpdateYTDLP.Size = new Size(101, 64);
             btn_UpdateYTDLP.TabIndex = 3;
             btn_UpdateYTDLP.Text = "Update YT-DLP";
             btn_UpdateYTDLP.UseVisualStyleBackColor = true;
@@ -193,7 +209,7 @@
             groupBox_Channel.Dock = DockStyle.Fill;
             groupBox_Channel.Location = new Point(3, 3);
             groupBox_Channel.Name = "groupBox_Channel";
-            groupBox_Channel.Size = new Size(424, 78);
+            groupBox_Channel.Size = new Size(424, 88);
             groupBox_Channel.TabIndex = 0;
             groupBox_Channel.TabStop = false;
             groupBox_Channel.Text = "Channel";
@@ -214,7 +230,7 @@
             btn_UpdateVideoList.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
             btn_UpdateVideoList.Location = new Point(433, 3);
             btn_UpdateVideoList.Name = "btn_UpdateVideoList";
-            btn_UpdateVideoList.Size = new Size(101, 78);
+            btn_UpdateVideoList.Size = new Size(101, 88);
             btn_UpdateVideoList.TabIndex = 1;
             btn_UpdateVideoList.Text = "Update Video List";
             btn_UpdateVideoList.UseVisualStyleBackColor = true;
@@ -224,12 +240,12 @@
             // 
             tlp_ListUpdater.SetColumnSpan(txt_Log, 2);
             txt_Log.Dock = DockStyle.Fill;
-            txt_Log.Location = new Point(3, 150);
+            txt_Log.Location = new Point(3, 237);
             txt_Log.Multiline = true;
             txt_Log.Name = "txt_Log";
             txt_Log.ReadOnly = true;
             txt_Log.ScrollBars = ScrollBars.Vertical;
-            txt_Log.Size = new Size(531, 271);
+            txt_Log.Size = new Size(531, 184);
             txt_Log.TabIndex = 2;
             // 
             // tabControl
@@ -978,7 +994,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem, selectNextMissingVideoToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkMissingVideosToolStripMenuItem, loadDownloadedVideoListToolStripMenuItem, selectNextMissingVideoToolStripMenuItem, getViewCountOfVideoInListToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
@@ -986,16 +1002,30 @@
             // checkMissingVideosToolStripMenuItem
             // 
             checkMissingVideosToolStripMenuItem.Name = "checkMissingVideosToolStripMenuItem";
-            checkMissingVideosToolStripMenuItem.Size = new Size(284, 26);
+            checkMissingVideosToolStripMenuItem.Size = new Size(303, 26);
             checkMissingVideosToolStripMenuItem.Text = "Check Missing Videos";
             checkMissingVideosToolStripMenuItem.Click += CheckMissingVideos_Click;
             // 
             // loadDownloadedVideoListToolStripMenuItem
             // 
             loadDownloadedVideoListToolStripMenuItem.Name = "loadDownloadedVideoListToolStripMenuItem";
-            loadDownloadedVideoListToolStripMenuItem.Size = new Size(284, 26);
+            loadDownloadedVideoListToolStripMenuItem.Size = new Size(303, 26);
             loadDownloadedVideoListToolStripMenuItem.Text = "Load Downloaded Video List";
             loadDownloadedVideoListToolStripMenuItem.Click += LoadDownloadedVideoList_Click;
+            // 
+            // selectNextMissingVideoToolStripMenuItem
+            // 
+            selectNextMissingVideoToolStripMenuItem.Name = "selectNextMissingVideoToolStripMenuItem";
+            selectNextMissingVideoToolStripMenuItem.Size = new Size(303, 26);
+            selectNextMissingVideoToolStripMenuItem.Text = "Select Next Missing Video";
+            selectNextMissingVideoToolStripMenuItem.Click += SelectNextMissingVideo_Click;
+            // 
+            // getViewCountOfVideoInListToolStripMenuItem
+            // 
+            getViewCountOfVideoInListToolStripMenuItem.Name = "getViewCountOfVideoInListToolStripMenuItem";
+            getViewCountOfVideoInListToolStripMenuItem.Size = new Size(303, 26);
+            getViewCountOfVideoInListToolStripMenuItem.Text = "Get View Count of Videos in List";
+            getViewCountOfVideoInListToolStripMenuItem.Click += GetViewCounts_Click;
             // 
             // cmdOptionsToolStripMenuItem
             // 
@@ -1011,13 +1041,6 @@
             chk_KeepCmdOpen.Size = new Size(201, 26);
             chk_KeepCmdOpen.Text = "Keep Cmd Open";
             // 
-            // selectNextMissingVideoToolStripMenuItem
-            // 
-            selectNextMissingVideoToolStripMenuItem.Name = "selectNextMissingVideoToolStripMenuItem";
-            selectNextMissingVideoToolStripMenuItem.Size = new Size(284, 26);
-            selectNextMissingVideoToolStripMenuItem.Text = "Select Next Missing Video";
-            selectNextMissingVideoToolStripMenuItem.Click += SelectNextMissingVideo_Click;
-            // 
             // YTVidListUpdater
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1029,7 +1052,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(460, 400);
             Name = "YTVidListUpdater";
-            Text = "YTVideoListUpdater v1.4.1";
+            Text = "YTVideoListUpdater v1.4.2";
             tlp_ListUpdater.ResumeLayout(false);
             tlp_ListUpdater.PerformLayout();
             groupBox_ytdlpver.ResumeLayout(false);
@@ -1152,5 +1175,7 @@
         private ToolStripMenuItem cmdOptionsToolStripMenuItem;
         private ToolStripMenuItem chk_KeepCmdOpen;
         private ToolStripMenuItem selectNextMissingVideoToolStripMenuItem;
+        private ToolStripMenuItem getViewCountOfVideoInListToolStripMenuItem;
+        private Button btn_InstallDeno;
     }
 }

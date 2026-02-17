@@ -7,6 +7,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using YoutubeDLSharp;
+using YoutubeDLSharp.Metadata;
 using YoutubeDLSharp.Options;
 using static YTVideoListUpdater.YTVidListUpdater;
 
@@ -608,6 +609,81 @@ namespace YTVideoListUpdater
                 else
                     i++;
             }
+        }
+
+        private void GetViewCounts_Click(object sender, EventArgs e)
+        {
+            GetMetadata();
+        }
+
+        private async void GetMetadata()
+        {
+            string outPath = "./videoListWithMetadata.tsv";
+
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select TSV spreadsheet of video URLs";
+            openFileDialog.Filter = "Tab Separated Value files (*.tsv)|*.tsv";
+
+            var result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                string tsvText = "";
+                txt_DownloadLog.Text = "Fetching video metadata, please wait. This can take some time...\r\n" +
+                    "If you see warnings below, the program is still working. Blame YouTube for how long this takes.\r\n";
+
+                foreach (var tsvLine in File.ReadAllLines(openFileDialog.FileName))
+                {
+                    string url = tsvLine.Split('\t')[0];
+
+                    var ytdl = new YoutubeDL
+                    {
+                        YoutubeDLPath = settings.YTDlpExePath
+                    };
+
+                    var runResult = await ytdl.RunVideoDataFetch(url);
+                    VideoData vidMetadata = runResult.Data;
+
+                    if (runResult.Data == null)
+                    {
+                        txt_DownloadLog.Text += $"\r\n\t[WARN] Failed to get metadata for: {url}";
+                        tsvText += $"{url}\r\n";
+                        continue;
+                    }
+
+                    tsvText += $"{url}\t{vidMetadata.Title}\t{vidMetadata.ViewCount}\t{vidMetadata.UploadDate}\t";
+                    tsvText += $"\r\n";
+                }
+
+                txt_DownloadLog.Text = $"Saved video list with metadata to: {outPath}";
+                SystemSounds.Exclamation.Play();
+
+                File.WriteAllText(outPath, tsvText);
+            }
+        }
+
+        private void InstallDeno_Click(object sender, EventArgs e)
+        {
+            txt_Log.Text += $"\r\nInstalling Deno...";
+            string powershellCmd = "irm https://deno.land/install.ps1 | iex";
+            txt_Log.Text += $"\r\nRunning powershell command: {powershellCmd}";
+
+            new Thread(() =>
+            {
+                using (Process p = new Process())
+                {
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(settings.YTDlpExePath));
+                    p.StartInfo.FileName = "powershell.exe";
+                    p.StartInfo.Arguments = powershellCmd;
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    p.StartInfo.CreateNoWindow = false;
+                    p.Start();
+                    p.WaitForExit();
+                }
+            }).Start();
+
+            txt_Log.Text += $"\r\nDeno should now be ready to use.";
+            SystemSounds.Exclamation.Play();
         }
     }
 
