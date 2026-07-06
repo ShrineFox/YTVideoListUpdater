@@ -47,6 +47,10 @@ namespace YTVideoListUpdater
 
         public bool EmbedSubs { get; set; } = false;
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+
+        public bool DLMp4Format { get; set; } = false;
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+
         public string CmdLineArgs { get; set; } = "";
     }
 
@@ -79,15 +83,16 @@ namespace YTVideoListUpdater
                 OutputDir = @"./",
                 TitleFormat = "%(title)s.%(ext)s",
                 YTDlpExePath = "./yt-dlp.exe",
-                WriteInfoJson = true,
-                WriteComments = true,
-                WriteDescription = true,
-                WriteThumbnail = true,
-                AddMetadata = true,
-                WriteSub = true,
-                EmbedSubs = true,
-                WriteAutoSubs = true,
-                CmdLineArgs = ""
+                WriteInfoJson = false,
+                WriteComments = false,
+                WriteDescription = false,
+                WriteThumbnail = false,
+                AddMetadata = false,
+                WriteSub = false,
+                EmbedSubs = false,
+                WriteAutoSubs = false,
+                DLMp4Format = true,
+                CmdLineArgs = "--verbose"
             };
         }
 
@@ -121,6 +126,7 @@ namespace YTVideoListUpdater
             chk_WriteSubs.Checked = settings.WriteSub;
             chk_WriteAutoSubs.Checked = settings.WriteAutoSubs;
             chk_EmbedSubs.Checked = settings.EmbedSubs;
+            chk_UseMp4Format.Checked = settings.DLMp4Format;
             txt_CmdArgs.Text = settings.CmdLineArgs;
         }
 
@@ -251,6 +257,13 @@ namespace YTVideoListUpdater
         {
             var chk = (CheckBox)sender;
             settings.EmbedSubs = chk.Checked;
+            SaveJson(jsonPath);
+        }
+
+        private void UseMp4Format_CheckedChanged(object sender, EventArgs e)
+        {
+            var chk = (CheckBox)sender;
+            settings.DLMp4Format = chk.Checked;
             SaveJson(jsonPath);
         }
 

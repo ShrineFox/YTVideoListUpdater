@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="YoutubeDLSharp" Version="1.1.2" />
   </ItemGroup>
 

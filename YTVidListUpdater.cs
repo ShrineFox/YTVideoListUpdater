@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using SevenZipExtractor;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -202,9 +204,14 @@ namespace YTVideoListUpdater
                     uploadDate = splitLines[4];
                 }
 
-                videos.Add(new YTVideo() { URL = url, Title = title, 
-                    IsDownloaded = !string.IsNullOrEmpty(isDownloadedCheckmark), 
-                    ViewCount = viewCount, Date = uploadDate });
+                videos.Add(new YTVideo()
+                {
+                    URL = url,
+                    Title = title,
+                    IsDownloaded = !string.IsNullOrEmpty(isDownloadedCheckmark),
+                    ViewCount = viewCount,
+                    Date = uploadDate
+                });
 
             }
             bs_videos.DataSource = null;
@@ -469,6 +476,10 @@ namespace YTVideoListUpdater
 
             if (chk_UseTimeStampRange.Checked)
                 args += $"\r\n--download-sections \"*{txt_from.Text}-{txt_to.Text}\"";
+
+            if (settings.DLMp4Format)
+                args += $"\r\n-S vcodec:h264,res,acodec:m4a";
+
             args += $"\r\n{settings.CmdLineArgs}";
 
             return args;
@@ -476,6 +487,15 @@ namespace YTVideoListUpdater
 
         private string GetYTDLPVersion()
         {
+            if (!File.Exists("./yt-dlp.exe"))
+            {
+                UpdateYTDLP();
+                if (!File.Exists("./yt-dlp.exe"))
+                {
+                    MessageBox.Show($"YT-DLP is missing, downloading won't work until you place it at: \"{Path.GetFullPath(txt_YTDLPPath.Text)}\"");
+                }
+            }
+
             string output = "";
             if (File.Exists(settings.YTDlpExePath))
             {
@@ -498,6 +518,30 @@ namespace YTVideoListUpdater
 
         private void UpdateYTDLP_Click(object sender, EventArgs e)
         {
+            UpdateYTDLP();
+        }
+
+        private void UpdateYTDLP()
+        {
+            if (!File.Exists("./yt-dlp.exe"))
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile("https://github.com/yt-dlp/yt-dlp/releases/download/2026.07.04/yt-dlp.exe", "./yt-dlp.exe");
+                }
+
+                if (File.Exists("./yt-dlp.exe"))
+                {
+                    txt_YTDLPPath.Text = "./yt-dlp.exe";
+                    txt_Log.Text += $"\r\nDownloaded yt-dlp.exe and updated YT-DLP path to newly downloaded one.";
+                }
+                else
+                {
+                    MessageBox.Show("Failed to download YT-DLP.");
+                    return;
+                }
+            }
+
             txt_Log.Text += $"\r\nUpdating YT-DLP...";
 
             new Thread(() =>
@@ -677,7 +721,7 @@ namespace YTVideoListUpdater
             OutputTSVOfDownloadedVideos("updatedMetadata.tsv");
 
             SystemSounds.Exclamation.Play();
-            
+
         }
 
         private void InstallDeno_Click(object sender, EventArgs e)
@@ -745,6 +789,49 @@ namespace YTVideoListUpdater
                 SystemSounds.Exclamation.Play();
 
                 OutputTSVOfDownloadedVideos("updatedMetadata.tsv");
+            }
+        }
+
+        private void InstallFFMPEG_Click(object sender, EventArgs e)
+        {
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.DownloadFile("https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z", "./ffmpeg.7z");
+                    if (File.Exists("./ffmpeg.7z"))
+                    {
+                        using (ArchiveFile archiveFile = new ArchiveFile("./ffmpeg.7z"))
+                        {
+                            foreach (Entry entry in archiveFile.Entries.Where(x => x.FileName.EndsWith("ffmpeg.exe")))
+                            {
+                                using (MemoryStream memoryStream = new MemoryStream())
+                                {
+                                    entry.Extract(memoryStream);
+                                    using (FileStream fs = new FileStream("./ffmpeg.exe", FileMode.Create, FileAccess.Write))
+                                    {
+                                        fs.Write(memoryStream.ToArray(), 0, memoryStream.ToArray().Length);
+                                    }
+                                    txt_Log.Text += $"\r\nDownloaded and extracted latest {entry.FileName}";
+                                }
+                            }
+                        }
+                        if (File.Exists("./ffmpeg.exe"))
+                        {
+                            txt_FFMPEGPath.Text = "./ffmpeg.exe";
+                            txt_Log.Text += $"\r\nFFMPEG path is now set to newly downloaded exe.";
+                        }
+                        else
+                        {
+                            txt_Log.Text += $"\r\nFailed to extract ffmpeg.exe from downloaded archive.";
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("\r\nFailed to download FFMPEG.");
+                    return;
+                }
             }
         }
     }
